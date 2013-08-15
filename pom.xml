@@ -8,7 +8,6 @@
     <artifactId>SelfEsteemSnake</artifactId>
     <version>0.1</version>
 
-<<<<<<< HEAD
     <build>
         <plugins>
             <plugin>
@@ -25,8 +24,5 @@
             </plugin>
         </plugins>
     </build>
-
-=======
->>>>>>> d7ae9833a3e54e21d4dd536bbe1fbf883692df2c
     
 </project>
