@@ -1,18 +1,35 @@
 package uk.co.lrnk.self_esteem_snake;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class World {
 
     private Space[][] spaces;
+    private int heightYLength = 12;
+    private int widthXLength = 20;
+
 
     private Snake snake;
 
+//    todo remove?
     public World(){
+        heightYLength = 12;
+        widthXLength = 20;
+        initBoard(widthXLength, heightYLength);
+    }
 
-        int boardHeightYLength = 12;
-        int boardWidthXLength = 20;
+    public World(int widthXLength, int heightYLength) {
+        initBoard(widthXLength, heightYLength);
+    }
 
-        initBoard(boardWidthXLength, boardHeightYLength);
+    public int getHeight() {
+        return heightYLength;
+    }
 
+    public int getWidth() {
+        return widthXLength;
     }
 
     public void setSnake(Snake snake) {
@@ -32,6 +49,15 @@ public class World {
 
     public Space getSpace(int x, int y) {
         return spaces[x][y];
+    }
+
+    public List<Space> getAllSpaces() {
+        List<Space> spaceList = new ArrayList<Space>();
+
+        for (Space[] row : spaces) {
+            spaceList.addAll(Arrays.asList(row));
+        }
+        return spaceList;
     }
 
     public void step(){

@@ -1,9 +1,13 @@
 package uk.co.lrnk.self_esteem_snake;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 public class WorldTest {
@@ -23,6 +27,37 @@ public class WorldTest {
             }
         }
 
+    }
+
+//    TODO clean up this mess
+    @Test
+    public void testGetAllSpaces() {
+        World world = new World();
+        int w = 4;
+        int h = 7;
+        int totalSpaces = w * h;
+
+
+        Space[][] spaces = new Space[w][h];
+
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                spaces[i][j] = new Space(i,j);
+            }
+        }
+
+        ReflectionTestUtils.setField(world,"spaces",spaces);
+
+        List<Space> spaceList = world.getAllSpaces();
+
+
+        assertEquals(totalSpaces,spaceList.size());
+
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                assertTrue(spaceList.contains(spaces[i][j]));
+            }
+        }
     }
 
     @Test

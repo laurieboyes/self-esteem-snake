@@ -4,10 +4,12 @@ public class Space {
 
     private int x;
     private int y;
+    private SpaceState state;
 
     public Space(int x, int y) {
         this.x = x;
         this.y = y;
+        state = SpaceState.EMPTY;
     }
 
     public int getX() {
@@ -16,6 +18,10 @@ public class Space {
 
     public int getY() {
         return y;
+    }
+
+    public SpaceState getState() {
+        return state;
     }
 
     @Override
