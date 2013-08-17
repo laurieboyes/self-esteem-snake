@@ -24,6 +24,11 @@ public class ASCIIWorldGenerator {
                 case EMPTY:
                     stateChar = ' ';
                     break;
+                case SNAKE:
+                    stateChar = 'O';
+                    break;
+                default:
+                    throw new RuntimeException("ASCIIWorldGenerator.fillInWorld: Attempted to draw space with unimplemented state");
             }
 
             String placeHolder = space.getX() + "-" + space.getY();

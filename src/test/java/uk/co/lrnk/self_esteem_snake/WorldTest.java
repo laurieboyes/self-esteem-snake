@@ -29,6 +29,15 @@ public class WorldTest {
 
     }
 
+    @Test
+    public void testGetInitialSnakeHeadSpace() {
+        World world = new World(20,12);
+        Space space = world.getInitialSnakeHeadSpace();
+
+        assertEquals(10, space.getX());
+        assertEquals(11, space.getY());
+    }
+
 //    TODO clean up this mess
     @Test
     public void testGetAllSpaces() {
@@ -58,21 +67,6 @@ public class WorldTest {
                 assertTrue(spaceList.contains(spaces[i][j]));
             }
         }
-    }
-
-    @Test
-    public void moveSnakeHeadAllGood() {
-        World world = new World();
-
-        Snake snake = new Snake();
-        snake.setHeadSpace(world.getSpace(10,10));
-        snake.setDirection(Direction.RIGHT);
-
-        world.setSnake(snake);
-
-        world.step();
-
-        assertEquals(snake.getHeadSpace(), world.getSpace(11,10));
     }
 
     @Test

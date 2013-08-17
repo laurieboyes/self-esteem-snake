@@ -1,34 +1,40 @@
 package uk.co.lrnk.self_esteem_snake;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import uk.co.lrnk.self_esteem_snake.ui.ASCIIWorldGenerator;
 
-public class SnakeGame implements ActionListener {
+public class SnakeGame  {
 
     World world;
-    Timer stepTimer;
+    int stepTimeInMilliseconds = 1 * 1000;
+    ASCIIWorldGenerator generator;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         SnakeGame game = new SnakeGame();
         game.startGame();
     }
 
-    private void startGame() {
+    private void startGame() throws InterruptedException {
 
         world = new World();
         Snake snake = new Snake();
-        world.setSnake(snake);
+        snake.placeInWorld(world);
 
-        stepTimer = new Timer(1 * 1000, this);
+        generator = new ASCIIWorldGenerator();
 
-        stepTimer.start();
+
+        while(true) {
+            try{
+                Thread.sleep(stepTimeInMilliseconds);
+                snake.step();
+                System.out.println("\n\n\n" + generator.getWorldString(world));
+            } catch (SnakeHitTheWallException ex) {
+                System.out.println("\n\nGAME OVER");
+                break;
+            }
+        }
+
     }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        world.step();
-    }
 }

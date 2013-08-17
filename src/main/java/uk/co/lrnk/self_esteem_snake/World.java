@@ -10,9 +10,6 @@ public class World {
     private int heightYLength = 12;
     private int widthXLength = 20;
 
-
-    private Snake snake;
-
 //    todo remove?
     public World(){
         heightYLength = 12;
@@ -32,10 +29,6 @@ public class World {
         return widthXLength;
     }
 
-    public void setSnake(Snake snake) {
-        this.snake = snake;
-    }
-
     private void initBoard(int xLength, int yLength) {
 
         spaces = new Space[xLength][yLength];
@@ -45,6 +38,10 @@ public class World {
                 spaces[iX][iY] = new Space(iX, iY);
             }
         }
+    }
+
+    public Space getInitialSnakeHeadSpace() {
+        return getSpace(widthXLength / 2, heightYLength - 1);
     }
 
     public Space getSpace(int x, int y) {
@@ -58,12 +55,6 @@ public class World {
             spaceList.addAll(Arrays.asList(row));
         }
         return spaceList;
-    }
-
-    public void step(){
-
-        snake.setHeadSpace(getNextSpace(snake.getHeadSpace(), snake.getDirection()));
-
     }
 
     public Space getNextSpace(Space space, Direction direction) {

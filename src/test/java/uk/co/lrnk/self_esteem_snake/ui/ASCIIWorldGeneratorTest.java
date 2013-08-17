@@ -5,6 +5,7 @@ import com.google.common.io.Resources;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.lrnk.self_esteem_snake.Space;
+import uk.co.lrnk.self_esteem_snake.SpaceState;
 import uk.co.lrnk.self_esteem_snake.World;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class ASCIIWorldGeneratorTest {
     }
 
     @Test
-    public void testFillInWorld() {
+    public void testFillInWorldEmpty() {
         ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
         World world = mock(World.class);
 
@@ -79,9 +80,26 @@ public class ASCIIWorldGeneratorTest {
         String expectedResult = " | | | | | | derp derp";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
+        assertEquals(expectedResult,filledInWorld);
+    }
+
+    @Test
+    public void testFillInWorldWithSnake() {
+        ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
+        World world = mock(World.class);
+
+        List<Space> spaceList = new ArrayList<Space>();
+        spaceList.add(new Space(2,3));
+        Space snakeSpace = new Space(5,7);
+        snakeSpace.setState(SpaceState.SNAKE);
+        spaceList.add(snakeSpace);
+        when(world.getAllSpaces()).thenReturn(spaceList);
+
+        String placeHolderString = "|2-3|5-7|";
+        String expectedResult = "| |O|";
+        String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
         assertEquals(expectedResult,filledInWorld);
-
     }
 
     @Test

@@ -24,11 +24,16 @@ public class Space {
         return state;
     }
 
+    public void setState(SpaceState state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "Space{" +
                 "x=" + x +
                 ", y=" + y +
+                ", state=" + state +
                 '}';
     }
 }
