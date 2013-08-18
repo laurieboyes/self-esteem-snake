@@ -5,7 +5,7 @@ import uk.co.lrnk.self_esteem_snake.Snake;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyboardInputManager implements KeyListener {
+public class SnakeKeyListener implements KeyListener {
 
     Snake snake;
 

@@ -17,7 +17,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>uk.co.lrnk.self_esteem_snake.SnakeGame</mainClass>
+                            <mainClass>uk.co.lrnk.self_esteem_snake.SnakeGameInPanelRunner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

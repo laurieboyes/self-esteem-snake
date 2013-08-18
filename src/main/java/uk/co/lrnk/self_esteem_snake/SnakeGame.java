@@ -1,56 +1,43 @@
 package uk.co.lrnk.self_esteem_snake;
 
-import uk.co.lrnk.self_esteem_snake.ui.GamePanel;
-
-import javax.swing.*;
-import java.awt.*;
+import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
 public class SnakeGame {
 
     World world;
     Snake snake;
-    GameState state;
+    GameState state = GameState.PLAYING;
     int stepTimeInMilliseconds = (int) (0.15 * 1000);
+    SnakeGameView view;
 
-    public static void main(String[] args) throws InterruptedException {
-
-        SnakeGame game = new SnakeGame();
-        game.startGame();
+    public void setView(SnakeGameView view) {
+        this.view = view;
     }
 
-    private void startGame() throws InterruptedException {
-
-        state = GameState.PLAYING;
-
+    public void initGame() {
         world = new World();
         snake = new Snake();
         snake.placeInWorld(world);
+    }
 
-        GamePanel gamePanel = getGamePanel();
+    public void startGameAndPlayTillDeath() {
 
+        state = GameState.PLAYING;
         while (true) {
             try {
                 Thread.sleep(stepTimeInMilliseconds);
                 snake.step();
-                gamePanel.repaint();
+                view.refreshView();
             } catch (GameOverException ex) {
                 state = GameState.GAME_OVER;
-                gamePanel.repaint();
+                view.refreshView();
                 break;
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                System.exit(1);
             }
         }
 
-    }
-
-    private GamePanel getGamePanel() {
-        GamePanel gamePanel = new GamePanel(this);
-        JFrame frame = new JFrame("Self Esteem Snake");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(gamePanel);
-        frame.setPreferredSize(new Dimension(325, 275));
-        frame.pack();
-        frame.setVisible(true);
-        return gamePanel;
     }
 
     public World getWorld() {

@@ -1,27 +1,64 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
+import uk.co.lrnk.self_esteem_snake.GameState;
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements SnakeGameView {
 
     SnakeGame game;
+    boolean startNewGame = true;
     ASCIIWorldGenerator generator;
-    KeyboardInputManager inputManager;
+    SnakeKeyListener snakeKeyListener;
 
-    public GamePanel(SnakeGame game) {
-        this.game = game;
-
+    public GamePanel() {
         generator = new ASCIIWorldGenerator();
 
-        inputManager = new KeyboardInputManager();
-        inputManager.setSnake(game.getSnake());
+        snakeKeyListener = new SnakeKeyListener();
 
         setFocusable(true);
         requestFocusInWindow();
-        addKeyListener(inputManager);
+        addKeyListener(snakeKeyListener);
+
+        KeyAdapter restartListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                if (game.getState() == GameState.GAME_OVER &&
+                        e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    startNewGame = true;
+                }
+            }
+        };
+
+        addKeyListener(restartListener);
+
+    }
+
+    public void start() {
+
+        while (true) {
+            while (!startNewGame) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+
+            startNewGame = false;
+
+            game = new SnakeGame();
+            game.setView(this);
+            game.initGame();
+            snakeKeyListener.setSnake(game.getSnake());
+            game.startGameAndPlayTillDeath();
+        }
 
     }
 
@@ -82,5 +119,10 @@ public class GamePanel extends JPanel {
 
         for (String line : worldString.split("\n"))
             g.drawString(line, leftOffset, topOffset += g.getFontMetrics().getHeight());
+    }
+
+    @Override
+    public void refreshView() {
+        repaint();
     }
 }
