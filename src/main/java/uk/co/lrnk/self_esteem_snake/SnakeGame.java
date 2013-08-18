@@ -8,7 +8,7 @@ import java.awt.*;
 public class SnakeGame {
 
     World world;
-    int stepTimeInMilliseconds = (int) (0.25 * 1000);
+    int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
     public static void main(String[] args) throws InterruptedException {
 

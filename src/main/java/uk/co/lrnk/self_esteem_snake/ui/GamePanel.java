@@ -11,12 +11,20 @@ public class GamePanel extends JPanel {
     World world;
     Snake snake;
     ASCIIWorldGenerator generator;
+    KeyboardInputManager inputManager;
 
     public GamePanel(World world, Snake snake) {
         this.world = world;
         this.snake = snake;
 
         generator = new ASCIIWorldGenerator();
+
+        inputManager = new KeyboardInputManager();
+        inputManager.setSnake(snake);
+
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(inputManager);
 
     }
 
