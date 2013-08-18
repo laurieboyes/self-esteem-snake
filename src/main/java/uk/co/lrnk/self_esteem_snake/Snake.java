@@ -4,13 +4,15 @@ import java.util.LinkedList;
 
 public class Snake {
 
-    private Direction direction;
+    private Direction currentDirection;
+    private Direction nextStepDirection;
     private World world;
     private int startingLength = 6;
     private LinkedList<Space> snakeSpaces;
 
     public Snake() {
-        setDirection(Direction.RIGHT);
+        setCurrentDirection(Direction.RIGHT);
+        setNextStepDirection(Direction.RIGHT);
     }
 
     public void placeInWorld(World world) {
@@ -32,20 +34,56 @@ public class Snake {
         return snakeSpaces.peekFirst();
     }
 
-    public Direction getDirection() {
-        return direction;
+    public Direction getCurrentDirection() {
+        return currentDirection;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public Direction getNextStepDirection() {
+        return nextStepDirection;
+    }
+
+    public void setNextStepDirection(Direction nextStepDirection) {
+        this.nextStepDirection = nextStepDirection;
     }
 
     public void step() {
-        snakeSpaces.addFirst(world.getNextSpace(getHeadSpace(),getDirection()));
+
+        setCurrentDirection(getNextStepDirection());
+
+        snakeSpaces.addFirst(world.getNextSpace(getHeadSpace(), getCurrentDirection()));
         getHeadSpace().setState(SpaceState.SNAKE);
 
         snakeSpaces.peekLast().setState(SpaceState.EMPTY);
         snakeSpaces.removeLast();
 
     }
+
+    public void tryToHeadUp() {
+        if(getCurrentDirection() != Direction.DOWN) {
+            setNextStepDirection(Direction.UP);
+        }
+    }
+
+    public void tryToHeadDown() {
+        if(getCurrentDirection() != Direction.UP) {
+            setNextStepDirection(Direction.DOWN);
+        }
+    }
+
+    public void tryToHeadRight() {
+        if(getCurrentDirection() != Direction.LEFT) {
+            setNextStepDirection(Direction.RIGHT);
+        }
+    }
+
+    public void tryToHeadLeft() {
+        if(getCurrentDirection() != Direction.RIGHT) {
+            setNextStepDirection(Direction.LEFT);
+        }
+    }
+    
 }

@@ -8,14 +8,15 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 public class SnakeTest {
 
     @Test
     public void testConstructSnake(){
         Snake snake = new Snake();
-        assertEquals(Direction.RIGHT, getField(snake, "direction"));
+
+        assertEquals(Direction.RIGHT, snake.getCurrentDirection());
+        assertEquals(Direction.RIGHT, snake.getNextStepDirection());
     }
 
     @Test
@@ -49,7 +50,7 @@ public class SnakeTest {
     }
 
     @Test
-    public void testStepAllGood() {
+    public void testStepSnakeSpaces() {
         Snake snake = new Snake();
         World world = new World(20,20);
         snake.placeInWorld(world);
@@ -67,6 +68,111 @@ public class SnakeTest {
         assertEquals(SpaceState.SNAKE, world.getSpace(11,11).getState());
         assertEquals(SpaceState.EMPTY, world.getSpace(4,11).getState());
 
+    }
+
+    @Test
+    public void testStepDirection() {
+        Snake snake = new Snake();
+        snake.placeInWorld(new World());
+        snake.setCurrentDirection(Direction.RIGHT);
+        snake.setNextStepDirection(Direction.RIGHT);
+
+        snake.setNextStepDirection(Direction.UP);
+
+        assertEquals(Direction.RIGHT,snake.getCurrentDirection());
+
+        snake.step();
+
+        assertEquals(Direction.UP,snake.getCurrentDirection());
+
+    }
+
+    @Test
+     public void testTryToHeadUpSuccess(){
+
+        Snake snake = getSnakeGoing(Direction.RIGHT);
+        snake.tryToHeadUp();
+
+        assertEquals(Direction.UP,snake.getNextStepDirection());
+        assertEquals(Direction.RIGHT,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadUpFail(){
+
+        Snake snake = getSnakeGoing(Direction.DOWN);
+        snake.tryToHeadUp();
+
+        assertEquals(Direction.DOWN,snake.getNextStepDirection());
+        assertEquals(Direction.DOWN,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadDownSuccess(){
+
+        Snake snake = getSnakeGoing(Direction.RIGHT);
+        snake.tryToHeadDown();
+
+        assertEquals(Direction.DOWN,snake.getNextStepDirection());
+        assertEquals(Direction.RIGHT,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadDownFail(){
+
+        Snake snake = getSnakeGoing(Direction.UP);
+        snake.tryToHeadDown();
+
+        assertEquals(Direction.UP,snake.getNextStepDirection());
+        assertEquals(Direction.UP,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadLeftSuccess(){
+
+        Snake snake = getSnakeGoing(Direction.UP);
+        snake.tryToHeadLeft();
+
+        assertEquals(Direction.LEFT,snake.getNextStepDirection());
+        assertEquals(Direction.UP,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadLeftFail(){
+
+        Snake snake = getSnakeGoing(Direction.RIGHT);
+        snake.tryToHeadLeft();
+
+        assertEquals(Direction.RIGHT,snake.getNextStepDirection());
+        assertEquals(Direction.RIGHT,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadRightSuccess(){
+
+        Snake snake = getSnakeGoing(Direction.UP);
+        snake.tryToHeadRight();
+
+        assertEquals(Direction.RIGHT,snake.getNextStepDirection());
+        assertEquals(Direction.UP,snake.getCurrentDirection());
+    }
+
+    @Test
+    public void testTryToHeadRightFail(){
+
+        Snake snake = getSnakeGoing(Direction.LEFT);
+        snake.tryToHeadRight();
+
+        assertEquals(Direction.LEFT,snake.getNextStepDirection());
+        assertEquals(Direction.LEFT,snake.getCurrentDirection());
+    }
+
+
+    private Snake getSnakeGoing(Direction direction) {
+        Snake snake = new Snake();
+        snake.setCurrentDirection(direction);
+        snake.setNextStepDirection(direction);
+        return snake;
     }
 
     private World getMockWorld() {
