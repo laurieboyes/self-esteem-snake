@@ -63,14 +63,9 @@ public class ASCIIWorldGenerator {
     }
 
     private void addBottomBorder(int w, StringBuilder worldString) {
-        worldString.append('|');
         for (int i = 0; i < w; i++) {
-            worldString.append("-");
-            if(i < w - 1) {
-                worldString.append("-");
-            }
+            worldString.append(" ¯");
         }
-        worldString.append('|');
     }
 
     private void addRowWithPlaceholders(int w, int rowNumber, StringBuilder worldString) {
