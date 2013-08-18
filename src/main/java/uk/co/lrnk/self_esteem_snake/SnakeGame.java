@@ -8,6 +8,8 @@ import java.awt.*;
 public class SnakeGame {
 
     World world;
+    Snake snake;
+    GameState state;
     int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
     public static void main(String[] args) throws InterruptedException {
@@ -18,11 +20,13 @@ public class SnakeGame {
 
     private void startGame() throws InterruptedException {
 
+        state = GameState.PLAYING;
+
         world = new World();
-        Snake snake = new Snake();
+        snake = new Snake();
         snake.placeInWorld(world);
 
-        GamePanel gamePanel = getGamePanel(world, snake);
+        GamePanel gamePanel = getGamePanel();
 
         while (true) {
             try {
@@ -30,15 +34,16 @@ public class SnakeGame {
                 snake.step();
                 gamePanel.repaint();
             } catch (SnakeHitTheWallException ex) {
-                System.out.println("\n\nGAME OVER");
+                state = GameState.GAME_OVER;
+                gamePanel.repaint();
                 break;
             }
         }
 
     }
 
-    private GamePanel getGamePanel(World world, Snake snake) {
-        GamePanel gamePanel = new GamePanel(world, snake);
+    private GamePanel getGamePanel() {
+        GamePanel gamePanel = new GamePanel(this);
         JFrame frame = new JFrame("Self Esteem Snake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(gamePanel);
@@ -48,5 +53,15 @@ public class SnakeGame {
         return gamePanel;
     }
 
+    public World getWorld() {
+        return world;
+    }
 
+    public Snake getSnake() {
+        return snake;
+    }
+
+    public GameState getState() {
+        return state;
+    }
 }
