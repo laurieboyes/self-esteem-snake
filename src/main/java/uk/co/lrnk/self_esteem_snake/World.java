@@ -7,7 +7,7 @@ import java.util.List;
 public class World {
 
     private Space[][] spaces;
-    private int heightYLength = 12;
+    private int heightYLength;
     private int widthXLength = 20;
 
 //    todo remove?
@@ -18,6 +18,8 @@ public class World {
     }
 
     public World(int widthXLength, int heightYLength) {
+        this.widthXLength = widthXLength;
+        this.heightYLength = heightYLength;
         initBoard(widthXLength, heightYLength);
     }
 
@@ -72,7 +74,7 @@ public class World {
                     throw new RuntimeException();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-             throw new SnakeHitTheWallException();
+             throw new NoNextSpaceException();
         }
 
     }

@@ -33,7 +33,7 @@ public class SnakeGame {
                 Thread.sleep(stepTimeInMilliseconds);
                 snake.step();
                 gamePanel.repaint();
-            } catch (SnakeHitTheWallException ex) {
+            } catch (GameOverException ex) {
                 state = GameState.GAME_OVER;
                 gamePanel.repaint();
                 break;

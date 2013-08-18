@@ -81,7 +81,7 @@ public class WorldTest {
         assertEquals(world.getSpace(5,11), world.getNextSpace(startSpace, Direction.DOWN));
     }
 
-    @Test(expected = SnakeHitTheWallException.class)
+    @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheBottomWall(){
         World world = new World();
 
@@ -89,7 +89,7 @@ public class WorldTest {
         world.getNextSpace(startSpace, Direction.DOWN);
     }
 
-    @Test(expected = SnakeHitTheWallException.class)
+    @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheTopWall(){
         World world = new World();
 
@@ -97,7 +97,7 @@ public class WorldTest {
         world.getNextSpace(startSpace, Direction.UP);
     }
 
-    @Test(expected = SnakeHitTheWallException.class)
+    @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheLeftWall(){
         World world = new World();
 
@@ -105,7 +105,7 @@ public class WorldTest {
         world.getNextSpace(startSpace, Direction.LEFT);
     }
 
-    @Test(expected = SnakeHitTheWallException.class)
+    @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheRightWall(){
         World world = new World();
 

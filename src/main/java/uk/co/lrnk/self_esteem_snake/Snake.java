@@ -52,13 +52,24 @@ public class Snake {
 
     public void step() {
 
-        setCurrentDirection(getNextStepDirection());
+        try {
+            setCurrentDirection(getNextStepDirection());
 
-        snakeSpaces.addFirst(world.getNextSpace(getHeadSpace(), getCurrentDirection()));
-        getHeadSpace().setState(SpaceState.SNAKE);
+            Space nextHeadSpace = world.getNextSpace(getHeadSpace(), getCurrentDirection());
 
-        snakeSpaces.peekLast().setState(SpaceState.EMPTY);
-        snakeSpaces.removeLast();
+            if(nextHeadSpace.getState() == SpaceState.SNAKE) {
+                throw new GameOverHitSelfException();
+            }
+
+            snakeSpaces.addFirst(nextHeadSpace);
+            getHeadSpace().setState(SpaceState.SNAKE);
+
+            snakeSpaces.peekLast().setState(SpaceState.EMPTY);
+            snakeSpaces.removeLast();
+
+        } catch (NoNextSpaceException ex) {
+            throw new GameOverHitWallException();
+        }
 
     }
 

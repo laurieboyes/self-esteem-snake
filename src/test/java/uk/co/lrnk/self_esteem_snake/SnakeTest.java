@@ -6,6 +6,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -55,8 +56,10 @@ public class SnakeTest {
         World world = new World(20,20);
         snake.placeInWorld(world);
 
+        int snakeY = 19;
+
         assertEquals(10, snake.getHeadSpace().getX());
-        assertEquals(11, snake.getHeadSpace().getY());
+        assertEquals(snakeY, snake.getHeadSpace().getY());
 
         List<Space> snakeSpaces = (List<Space>) ReflectionTestUtils.getField(snake, "snakeSpaces");
         assertEquals(6, snakeSpaces.size());
@@ -64,9 +67,9 @@ public class SnakeTest {
         snake.step();
 
         assertEquals(6, snakeSpaces.size());
-        assertEquals(world.getSpace(11, 11),snake.getHeadSpace());
-        assertEquals(SpaceState.SNAKE, world.getSpace(11,11).getState());
-        assertEquals(SpaceState.EMPTY, world.getSpace(4,11).getState());
+        assertEquals(world.getSpace(11, snakeY),snake.getHeadSpace());
+        assertEquals(SpaceState.SNAKE, world.getSpace(11,snakeY).getState());
+        assertEquals(SpaceState.EMPTY, world.getSpace(4,snakeY).getState());
 
     }
 
@@ -85,6 +88,52 @@ public class SnakeTest {
 
         assertEquals(Direction.UP,snake.getCurrentDirection());
 
+    }
+
+    @Test
+    public void testStepHitAWall() {
+        Snake snake = new Snake();
+        World world = new World(20,20);
+        snake.placeInWorld(world);
+
+        assertEquals(10,snake.getHeadSpace().getX());
+
+        for (int i = 0; i < 9; i++) {
+            snake.step();
+        }
+
+        assertEquals(19,snake.getHeadSpace().getX());
+
+        try{
+            snake.step();
+            fail();
+        } catch (GameOverHitWallException ex) {
+        }
+    }
+
+    @Test
+    public void testStepHitSelf() {
+        Snake snake = new Snake();
+        World world = new World(20,20);
+        snake.placeInWorld(world);
+
+        assertEquals(10, snake.getHeadSpace().getX());
+
+        snake.tryToHeadUp();
+        snake.step();
+        snake.tryToHeadLeft();
+        snake.step();
+        snake.tryToHeadDown();
+
+        assertEquals(9, snake.getHeadSpace().getX());
+        assertEquals(18, snake.getHeadSpace().getY());
+        assertEquals(SpaceState.SNAKE, world.getNextSpace(snake.getHeadSpace(),snake.getNextStepDirection()).getState());
+
+        try{
+            snake.step();
+            fail();
+        } catch (GameOverHitSelfException ex) {
+        }
     }
 
     @Test
