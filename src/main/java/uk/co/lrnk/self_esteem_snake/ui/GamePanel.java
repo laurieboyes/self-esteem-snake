@@ -12,6 +12,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
     SnakeGame game;
     boolean startNewGame = true;
+    boolean gameInitComplete = false;
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
 
@@ -53,10 +54,12 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
             startNewGame = false;
 
+            gameInitComplete = false;
             game = new SnakeGame();
-            game.setView(this);
             game.initGame();
             snakeKeyListener.setSnake(game.getSnake());
+            game.setView(this);
+            gameInitComplete = true;
             game.startGameAndPlayTillDeath();
         }
 
@@ -66,6 +69,20 @@ public class GamePanel extends JPanel implements SnakeGameView {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if(gameInitComplete){
+            try {
+                paintSnakeGame((Graphics2D) g);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.exit(1);
+            }
+        } else {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+
+    private void paintSnakeGame(Graphics2D g) {
         switch (game.getState()) {
             case PLAYING:
                 drawPlaying(g);
@@ -76,29 +93,26 @@ public class GamePanel extends JPanel implements SnakeGameView {
         }
     }
 
-    private void drawPlaying(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+    private void drawPlaying(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
 
-        g2.setColor(Color.BLACK);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-
-        drawWorldString(g2, generator.getWorldString(game.getWorld()));
+        drawWorldString(g, generator.getWorldString(game.getWorld()));
     }
 
-    private void drawGameOver(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+    private void drawGameOver(Graphics2D g) {
 
-        g2.setColor(Color.BLACK);
-        g2.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
 
-        g2.setFont(new Font("Monospaced", Font.PLAIN, 11));
-        g2.setColor(Color.green);
+        g.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        g.setColor(Color.green);
 
         String gameOverMessage = "GAME OVER";
-        int gameOverX = (getWidth() / 2) - getLeftOffsetForCenteringText(g2, gameOverMessage);
+        int gameOverX = (getWidth() / 2) - getLeftOffsetForCenteringText(g, gameOverMessage);
         int gameOverY = (getHeight() / 2) - (g.getFontMetrics().getHeight() / 2);
 
-        g2.drawString(gameOverMessage, gameOverX, gameOverY);
+        g.drawString(gameOverMessage, gameOverX, gameOverY);
 
     }
 

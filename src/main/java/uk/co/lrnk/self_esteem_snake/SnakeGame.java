@@ -26,7 +26,7 @@ public class SnakeGame {
         while (true) {
             try {
                 Thread.sleep(stepTimeInMilliseconds);
-                snake.step();
+                step();
                 view.refreshView();
             } catch (GameOverException ex) {
                 state = GameState.GAME_OVER;
@@ -38,6 +38,11 @@ public class SnakeGame {
             }
         }
 
+    }
+
+    private void step() {
+        getSnake().step();
+        getWorld().step();
     }
 
     public World getWorld() {

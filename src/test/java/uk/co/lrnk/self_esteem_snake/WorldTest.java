@@ -5,9 +5,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 public class WorldTest {
@@ -20,6 +18,23 @@ public class WorldTest {
 
         assertEquals(20, spaces.length);
         assertEquals(12, spaces[0].length);
+
+        for(Space[] row : spaces) {
+            for(Space space : row) {
+                assertNotNull(space);
+            }
+        }
+
+    }
+
+    @Test
+    public void testSmallWorld(){
+        World world = new World(5,5);
+
+        Space[][] spaces = (Space[][]) getField(world,"spaces");
+
+        assertEquals(5, spaces.length);
+        assertEquals(5, spaces[0].length);
 
         for(Space[] row : spaces) {
             for(Space space : row) {
@@ -114,6 +129,73 @@ public class WorldTest {
     }
 
 
+    @Test
+    public void getEmptySpacesAllEmpty() {
+        World world = new World(10,10);
+        List<Space> emptySpaces = world.getEmptySpaces();
+        assertEquals(100,emptySpaces.size());
+        for(Space space : emptySpaces) {
+            assertEquals(SpaceState.EMPTY, space.getState());
+        }
+    }
+
+    @Test
+    public void getEmptySpacesFromWorldWithSnake() {
+        World world = new World(10,10);
+        for (int i = 0; i < 6; i++) {
+            world.getSpace(i,3).setState(SpaceState.SNAKE);
+        }
+        List<Space> emptySpaces = world.getEmptySpaces();
+        assertEquals(94,emptySpaces.size());
+        for(Space space : emptySpaces) {
+            assertEquals(SpaceState.EMPTY, space.getState());
+        }
+    }
+
+    @Test
+    public void getEmptySpacesFromFullWorld() {
+        World world = new World(10,10);
+        for(Space space : world.getAllSpaces()) {
+            space.setState(SpaceState.SNAKE);
+        }
+        List<Space> emptySpaces = world.getEmptySpaces();
+        assertEquals(0,emptySpaces.size());
+    }
+
+    @Test(expected = WorldFullException.class)
+    public void placeFoodInWorldFullWorld() {
+        World world = new World(10,10);
+        for(Space space : world.getAllSpaces()) {
+            space.setState(SpaceState.SNAKE);
+        }
+        world.placeFoodInWorld();
+    }
+
+    @Test
+    public void testStepAddNewFood(){
+        World world = getTenByTenWorldWithSnake();
+        for(Space space : world.getAllSpaces()) {
+            if(space.getState() == SpaceState.FOOD) {
+                fail();
+            }
+        }
+
+        world.step();
+        int numberOfFoodSpace = 0;
+        for(Space space : world.getAllSpaces()) {
+            if(space.getState() == SpaceState.FOOD) {
+                numberOfFoodSpace++;
+            }
+        }
+        assertEquals(1, numberOfFoodSpace);
+    }
 
 
+    private World getTenByTenWorldWithSnake() {
+        World world = new World(10,10);
+        for (int i = 0; i < 6; i++) {
+            world.getSpace(i,3).setState(SpaceState.SNAKE);
+        }
+        return world;
+    }
 }

@@ -9,17 +9,21 @@ public class World {
     private Space[][] spaces;
     private int heightYLength;
     private int widthXLength = 20;
+    RandomNumberGenerator randomNumberGenerator;
 
-//    todo remove?
-    public World(){
+    //    todo remove?
+    public World() {
         heightYLength = 12;
         widthXLength = 20;
+        randomNumberGenerator = new RandomNumberGenerator();
         initBoard(widthXLength, heightYLength);
+
     }
 
     public World(int widthXLength, int heightYLength) {
         this.widthXLength = widthXLength;
         this.heightYLength = heightYLength;
+        randomNumberGenerator = new RandomNumberGenerator();
         initBoard(widthXLength, heightYLength);
     }
 
@@ -31,6 +35,10 @@ public class World {
         return widthXLength;
     }
 
+    public void setRandomNumberGenerator(RandomNumberGenerator randomNumberGenerator) {
+        this.randomNumberGenerator = randomNumberGenerator;
+    }
+
     private void initBoard(int xLength, int yLength) {
 
         spaces = new Space[xLength][yLength];
@@ -40,6 +48,30 @@ public class World {
                 spaces[iX][iY] = new Space(iX, iY);
             }
         }
+    }
+
+    public void step(){
+        int numberOfFoodSpace = 0;
+        for(Space space : getAllSpaces()) {
+            if(space.getState() == SpaceState.FOOD) {
+                numberOfFoodSpace++;
+            }
+        }
+
+        if(numberOfFoodSpace == 0) {
+            placeFoodInWorld();
+        }
+    }
+
+    public void placeFoodInWorld() {
+
+        List<Space> emptySpaces = getEmptySpaces();
+        if(emptySpaces.isEmpty()) {
+            throw new WorldFullException();
+        }
+
+        Space foodSpace = emptySpaces.get(randomNumberGenerator.getRandomNumber(0, emptySpaces.size() - 1));
+        foodSpace.setState(SpaceState.FOOD);
     }
 
     public Space getInitialSnakeHeadSpace() {
@@ -60,7 +92,7 @@ public class World {
     }
 
     public Space getNextSpace(Space space, Direction direction) {
-        try{
+        try {
             switch (direction) {
                 case RIGHT:
                     return getSpace(space.getX() + 1, space.getY());
@@ -74,9 +106,19 @@ public class World {
                     throw new RuntimeException();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-             throw new NoNextSpaceException();
+            throw new NoNextSpaceException();
         }
 
+    }
+
+    public List<Space> getEmptySpaces() {
+        List<Space> emptySpaces = new ArrayList<Space>();
+        for(Space space : getAllSpaces()) {
+            if(space.getState() == SpaceState.EMPTY) {
+                emptySpaces.add(space);
+            }
+        }
+        return emptySpaces;
     }
 
 }

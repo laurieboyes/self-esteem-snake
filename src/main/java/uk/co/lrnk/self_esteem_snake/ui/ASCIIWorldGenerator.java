@@ -27,6 +27,9 @@ public class ASCIIWorldGenerator {
                 case SNAKE:
                     stateChar = 'O';
                     break;
+                case FOOD:
+                    stateChar = '~';
+                    break;
                 default:
                     throw new RuntimeException("ASCIIWorldGenerator.fillInWorld: Attempted to draw space with unimplemented state");
             }
