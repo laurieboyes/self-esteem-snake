@@ -236,4 +236,31 @@ public class SnakeTest {
         when(mockWorld.getInitialSnakeHeadSpace()).thenReturn(headSpace);
         return mockWorld;
     }
+
+    @Test
+    public void growWhenEatFood() {
+        World world = new World(20,20);
+        Snake snake = new Snake();
+        snake.placeInWorld(world);
+
+        assertEquals(6,((List<Space>)ReflectionTestUtils.getField(snake,"snakeSpaces")).size());
+        assertEquals(394,world.getEmptySpaces().size());
+
+
+        assertEquals(Direction.RIGHT,snake.getNextStepDirection());
+        Space nextSpace = world.getNextSpace(snake.getHeadSpace(),Direction.RIGHT);
+
+        assertEquals(SpaceState.EMPTY, nextSpace.getState());
+        nextSpace.setState(SpaceState.FOOD);
+        assertEquals(SpaceState.FOOD, nextSpace.getState());
+
+        snake.step();
+
+        assertEquals(SpaceState.SNAKE, nextSpace.getState());
+        assertEquals(7,((List<Space>)ReflectionTestUtils.getField(snake,"snakeSpaces")).size());
+        assertEquals(393,world.getEmptySpaces().size());
+
+
+
+    }
 }
