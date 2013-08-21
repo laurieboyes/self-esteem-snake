@@ -3,6 +3,8 @@ package uk.co.lrnk.self_esteem_snake;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -259,8 +261,16 @@ public class SnakeTest {
         assertEquals(SpaceState.SNAKE, nextSpace.getState());
         assertEquals(7,((List<Space>)ReflectionTestUtils.getField(snake,"snakeSpaces")).size());
         assertEquals(393,world.getEmptySpaces().size());
+    }
 
+    @Test
+    public void testGetLength() {
+        Snake snake = new Snake();
+        LinkedList<Space> snakeSpaces = new LinkedList<Space>(Arrays.asList(new Space[]{new Space(0, 0), new Space(0, 1), new Space(0, 2)}));
+        assertEquals(3,snakeSpaces.size());
 
+        ReflectionTestUtils.setField(snake,"snakeSpaces", snakeSpaces);
 
+        assertEquals(3,snake.getLength());
     }
 }

@@ -100,5 +100,12 @@ public class Snake {
             setNextStepDirection(Direction.LEFT);
         }
     }
-    
+
+    public int getStartingLength() {
+        return startingLength;
+    }
+
+    public int getLength() {
+        return snakeSpaces.size();
+    }
 }

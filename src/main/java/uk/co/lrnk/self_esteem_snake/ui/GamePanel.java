@@ -105,15 +105,40 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        g.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        Font font = new Font("Monospaced", Font.PLAIN, 11);
+        g.setFont(font);
         g.setColor(Color.green);
 
         String gameOverMessage = "GAME OVER";
-        int gameOverX = (getWidth() / 2) - getLeftOffsetForCenteringText(g, gameOverMessage);
-        int gameOverY = (getHeight() / 2) - (g.getFontMetrics().getHeight() / 2);
-
+        int gameOverX = getCenteredStringX(g,font,gameOverMessage);
+        int gameOverY = getCenteredStringY(g,font,gameOverMessage) - g.getFontMetrics(font).getHeight();
         g.drawString(gameOverMessage, gameOverX, gameOverY);
 
+        String score = "" + game.getScore();
+        int scoreX = getCenteredStringX(g,font,score);
+        int scoreY = getCenteredStringY(g,font,score);
+        g.drawString(score, scoreX, scoreY);
+
+    }
+
+    private int getCenteredStringX(Graphics2D g, Font f, String string) {
+        FontMetrics fm   = g.getFontMetrics(f);
+        java.awt.geom.Rectangle2D rect = fm.getStringBounds(string, g);
+
+        int textWidth  = (int)(rect.getWidth());
+        int panelWidth = this.getWidth();
+
+        return (panelWidth  - textWidth) / 2;
+    }
+
+    private int getCenteredStringY(Graphics2D g, Font f, String string) {
+        FontMetrics fm   = g.getFontMetrics(f);
+        java.awt.geom.Rectangle2D rect = fm.getStringBounds(string, g);
+
+        int textHeight = (int)(rect.getHeight());
+        int panelHeight= this.getHeight();
+
+        return (panelHeight - textHeight) / 2  + fm.getAscent();
     }
 
     private int getLeftOffsetForCenteringText(Graphics2D g, String text) {

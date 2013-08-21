@@ -56,4 +56,8 @@ public class SnakeGame {
     public GameState getState() {
         return state;
     }
+
+    public int getScore(){
+        return 7 * (snake.getLength() - snake.getStartingLength());
+    }
 }
