@@ -25,10 +25,13 @@ public class SnakeTest {
     @Test
     public void testPlaceSnakeInWorld() {
         Snake snake = new Snake();
-        assertEquals(6, ReflectionTestUtils.getField(snake,"startingLength"));
-        World mockWorld = getMockWorld();
+        assertEquals(6, snake.getStartingLength());
 
-        snake.placeInWorld(mockWorld);
+        World world = new World(10,10);
+
+        assertEquals(world.getAllSpaces().size(), world.getEmptySpaces().size());
+        snake.placeInWorld(world);
+        assertEquals(world.getAllSpaces().size() - 6, world.getEmptySpaces().size());
 
         assertEquals(SpaceState.SNAKE, snake.getHeadSpace().getState());
 
@@ -42,43 +45,68 @@ public class SnakeTest {
     }
 
     @Test
+    public void testPlaceSpaceInMinimumSize8By2World(){
+        World world = new World(8,2);
+        Snake snake = new Snake();
+        assertEquals(6, snake.getStartingLength());
+
+        assertEquals(world.getAllSpaces().size(), world.getEmptySpaces().size());
+        snake.placeInWorld(world);
+        assertEquals(world.getAllSpaces().size() - 6, world.getEmptySpaces().size());
+
+        assertEquals(SpaceState.SNAKE, world.getSpace(6,1).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(5,1).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(4,1).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(3,1).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(2,1).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(1,1).getState());
+
+    }
+
+    @Test
     public void testGetHeadSpace() {
         Snake snake = new Snake();
-        World mockWorld = getMockWorld();
-        snake.placeInWorld(mockWorld);
+        World world = new World(10,10);
+        snake.placeInWorld(world);
 
-        assertEquals(10,snake.getHeadSpace().getX());
-        assertEquals(10,snake.getHeadSpace().getY());
+        assertEquals(6,snake.getHeadSpace().getX());
+        assertEquals(9,snake.getHeadSpace().getY());
 
     }
 
     @Test
     public void testStepSnakeSpaces() {
         Snake snake = new Snake();
-        World world = new World(20,20);
+        World world = new World(20,12);
         snake.placeInWorld(world);
 
-        int snakeY = 19;
+        int originalSnakeHeadX = 6;
+        int originalSnakeHeadY = 11;
+        int originalSnakeTailEndX = 1;
 
-        assertEquals(10, snake.getHeadSpace().getX());
-        assertEquals(snakeY, snake.getHeadSpace().getY());
-
+        assertEquals(originalSnakeHeadX, snake.getHeadSpace().getX());
+        assertEquals(originalSnakeHeadY, snake.getHeadSpace().getY());
         List<Space> snakeSpaces = (List<Space>) ReflectionTestUtils.getField(snake, "snakeSpaces");
-        assertEquals(6, snakeSpaces.size());
+        assertEquals(originalSnakeHeadX, snakeSpaces.size());
 
         snake.step();
 
-        assertEquals(6, snakeSpaces.size());
-        assertEquals(world.getSpace(11, snakeY),snake.getHeadSpace());
-        assertEquals(SpaceState.SNAKE, world.getSpace(11,snakeY).getState());
-        assertEquals(SpaceState.EMPTY, world.getSpace(4,snakeY).getState());
+        int expectedNewSnakeHeadX = originalSnakeHeadX + 1;
+        int expectedNewSnakeHeadY = originalSnakeHeadY;
+        int expectedSnakeTailEndX = originalSnakeTailEndX + 1;
+
+        assertEquals(originalSnakeHeadX, snakeSpaces.size());
+        assertEquals(world.getSpace(expectedNewSnakeHeadX, expectedNewSnakeHeadY),snake.getHeadSpace());
+        assertEquals(SpaceState.SNAKE, world.getSpace(expectedNewSnakeHeadX,expectedNewSnakeHeadY).getState());
+        assertEquals(SpaceState.SNAKE, world.getSpace(expectedSnakeTailEndX, expectedNewSnakeHeadY).getState());
+        assertEquals(SpaceState.EMPTY, world.getSpace(expectedSnakeTailEndX - 1,expectedNewSnakeHeadY).getState());
 
     }
 
     @Test
     public void testStepDirection() {
         Snake snake = new Snake();
-        snake.placeInWorld(new World());
+        snake.placeInWorld(new World(20, 12));
         snake.setCurrentDirection(Direction.RIGHT);
         snake.setNextStepDirection(Direction.RIGHT);
 
@@ -95,12 +123,14 @@ public class SnakeTest {
     @Test
     public void testStepHitAWall() {
         Snake snake = new Snake();
-        World world = new World(20,20);
+        World world = new World(20,10);
         snake.placeInWorld(world);
 
-        assertEquals(10,snake.getHeadSpace().getX());
+        assertEquals(6,snake.getHeadSpace().getX());
 
-        for (int i = 0; i < 9; i++) {
+        int numberToStepToGetJustInFrontOfWall = 20 - 7;
+
+        for (int i = 0; i < numberToStepToGetJustInFrontOfWall; i++) {
             snake.step();
         }
 
@@ -119,7 +149,7 @@ public class SnakeTest {
         World world = new World(20,20);
         snake.placeInWorld(world);
 
-        assertEquals(10, snake.getHeadSpace().getX());
+        assertEquals(6, snake.getHeadSpace().getX());
 
         snake.tryToHeadUp();
         snake.step();
@@ -127,7 +157,7 @@ public class SnakeTest {
         snake.step();
         snake.tryToHeadDown();
 
-        assertEquals(9, snake.getHeadSpace().getX());
+        assertEquals(5, snake.getHeadSpace().getX());
         assertEquals(18, snake.getHeadSpace().getY());
         assertEquals(SpaceState.SNAKE, world.getNextSpace(snake.getHeadSpace(),snake.getNextStepDirection()).getState());
 

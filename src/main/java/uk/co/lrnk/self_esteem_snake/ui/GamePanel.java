@@ -141,14 +141,6 @@ public class GamePanel extends JPanel implements SnakeGameView {
         return (panelHeight - textHeight) / 2  + fm.getAscent();
     }
 
-    private int getLeftOffsetForCenteringText(Graphics2D g, String text) {
-
-        int characterWidth = g.getFontMetrics().getWidths()[0];
-        double halfTheNumberOfCharacters = ((double) text.length() / 2);
-
-        return (int) (characterWidth * halfTheNumberOfCharacters);
-    }
-
     private void drawWorldString(Graphics2D g, String worldString) {
         int leftOffset = 10;
         int topOffset = 0;

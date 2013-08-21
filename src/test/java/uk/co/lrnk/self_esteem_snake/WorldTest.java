@@ -12,7 +12,7 @@ public class WorldTest {
 
     @Test
     public void testConstructWorld(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space[][] spaces = (Space[][]) getField(world,"spaces");
 
@@ -27,38 +27,37 @@ public class WorldTest {
 
     }
 
-    @Test
-    public void testSmallWorld(){
-        World world = new World(5,5);
-
-        Space[][] spaces = (Space[][]) getField(world,"spaces");
-
-        assertEquals(5, spaces.length);
-        assertEquals(5, spaces[0].length);
-
-        for(Space[] row : spaces) {
-            for(Space space : row) {
-                assertNotNull(space);
-            }
-        }
-
+    @Test(expected = GameInitException.class)
+    public void testConstructWorldWhichViolatesMinWidthOf8(){
+        new World(7,10);
     }
 
     @Test
-    public void testGetInitialSnakeHeadSpace() {
-        World world = new World(20,12);
-        Space space = world.getInitialSnakeHeadSpace();
+    public void testConstructWorldBoundaryWidth8(){
+        new World(8,10);
+    }
 
-        assertEquals(10, space.getX());
-        assertEquals(11, space.getY());
+    @Test(expected = GameInitException.class)
+    public void testConstructWorldWhichViolatesMinHeightOf2(){
+        new World(10,1);
+    }
+
+    @Test
+    public void testConstructWorldBoundaryHeight2(){
+        new World(10,2);
+    }
+
+    @Test(expected = GameInitException.class)
+    public void testConstructWorldWhichViolatesBothMinimums(){
+        new World(1,1);
     }
 
 //    TODO clean up this mess
     @Test
     public void testGetAllSpaces() {
-        World world = new World();
-        int w = 4;
-        int h = 7;
+        World world = new World(8,3);
+        int w = 8;
+        int h = 3;
         int totalSpaces = w * h;
 
 
@@ -86,7 +85,7 @@ public class WorldTest {
 
     @Test
     public void getNextSpaceAllGood(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space startSpace = world.getSpace(5,10);
 
@@ -98,7 +97,7 @@ public class WorldTest {
 
     @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheBottomWall(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space startSpace = world.getSpace(5,11);
         world.getNextSpace(startSpace, Direction.DOWN);
@@ -106,7 +105,7 @@ public class WorldTest {
 
     @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheTopWall(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space startSpace = world.getSpace(5,0);
         world.getNextSpace(startSpace, Direction.UP);
@@ -114,7 +113,7 @@ public class WorldTest {
 
     @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheLeftWall(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space startSpace = world.getSpace(0,11);
         world.getNextSpace(startSpace, Direction.LEFT);
@@ -122,7 +121,7 @@ public class WorldTest {
 
     @Test(expected = NoNextSpaceException.class)
     public void getNextSpaceHitsTheRightWall(){
-        World world = new World();
+        World world = new World(20, 12);
 
         Space startSpace = world.getSpace(19,11);
         world.getNextSpace(startSpace, Direction.RIGHT);

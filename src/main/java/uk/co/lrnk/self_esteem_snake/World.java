@@ -11,16 +11,15 @@ public class World {
     private int widthXLength = 20;
     RandomNumberGenerator randomNumberGenerator;
 
-    //    todo remove?
-    public World() {
-        heightYLength = 12;
-        widthXLength = 20;
-        randomNumberGenerator = new RandomNumberGenerator();
-        initBoard(widthXLength, heightYLength);
-
-    }
-
     public World(int widthXLength, int heightYLength) {
+
+        if(widthXLength < 8) {
+            throw new GameInitException("World width " + widthXLength + " too small. Must be at least 8");
+        }
+        if(heightYLength < 2) {
+            throw new GameInitException("World width " + heightYLength + " too small. Must be at least 2");
+        }
+
         this.widthXLength = widthXLength;
         this.heightYLength = heightYLength;
         randomNumberGenerator = new RandomNumberGenerator();

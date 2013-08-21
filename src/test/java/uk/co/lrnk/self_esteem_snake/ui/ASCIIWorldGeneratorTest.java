@@ -106,7 +106,7 @@ public class ASCIIWorldGeneratorTest {
     @Test
     public void testEmptyWorld() throws IOException {
 
-        World world = new World();
+        World world = new World(20, 12);
         ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
 
         String expected = Resources.toString(Resources.getResource("uk/co/lrnk/self_esteem_snake/ui/empty-world.txt"), Charsets.UTF_8);

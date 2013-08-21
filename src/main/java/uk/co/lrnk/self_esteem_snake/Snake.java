@@ -17,14 +17,18 @@ public class Snake {
 
     public void placeInWorld(World world) {
         this.world = world;
-        Space headSpace = world.getInitialSnakeHeadSpace();
+
+        int headSpaceX = startingLength;
+        int headSpaceY = world.getHeight() - 1;
+
+        Space headSpace = world.getSpace(headSpaceX, headSpaceY);
 
         snakeSpaces = new LinkedList<Space>();
         snakeSpaces.add(headSpace);
         headSpace.setState(SpaceState.SNAKE);
 
         for (int i = 1; i < startingLength; i++) {
-            Space tailSpace = world.getSpace(getHeadSpace().getX() - i, getHeadSpace().getY());
+            Space tailSpace = world.getSpace(headSpaceX - i, headSpaceY);
             snakeSpaces.add(tailSpace);
             tailSpace.setState(SpaceState.SNAKE);
         }

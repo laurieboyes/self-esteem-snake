@@ -15,7 +15,7 @@ public class SnakeGame {
     }
 
     public void initGame() {
-        world = new World();
+        world = new World(20, 12);
         snake = new Snake();
         snake.placeInWorld(world);
     }
