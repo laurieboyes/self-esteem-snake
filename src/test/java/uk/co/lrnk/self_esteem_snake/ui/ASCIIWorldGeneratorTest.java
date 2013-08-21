@@ -36,7 +36,7 @@ public class ASCIIWorldGeneratorTest {
         ReflectionTestUtils.invokeMethod(generator, "addBottomBorder", 5, sb);
 
 
-        assertEquals(" - - - - -", sb.toString());
+        assertEquals(" \u00AF \u00AF \u00AF \u00AF \u00AF", sb.toString());
     }
 
     @Test

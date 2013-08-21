@@ -18,7 +18,7 @@ public class SnakeGameInPanelRunner {
         JFrame frame = new JFrame("Self Esteem Snake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(gamePanel);
-        frame.setPreferredSize(new Dimension(325, 275));
+        frame.setPreferredSize(new Dimension(325, 270));
         frame.pack();
         frame.setVisible(true);
         return gamePanel;

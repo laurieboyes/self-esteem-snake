@@ -67,7 +67,7 @@ public class ASCIIWorldGenerator {
 
     private void addBottomBorder(int w, StringBuilder worldString) {
         for (int i = 0; i < w; i++) {
-            worldString.append(" -");
+            worldString.append(" \u00AF");
         }
     }
 
