@@ -29,6 +29,10 @@ public class GamePanel extends JPanel implements SnakeGameView {
             @Override
             public void keyPressed(KeyEvent e) {
 
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
+                }
+
                 if (game.getState() == GameState.GAME_OVER &&
                         e.getKeyCode() == KeyEvent.VK_ENTER) {
                     startNewGame = true;
