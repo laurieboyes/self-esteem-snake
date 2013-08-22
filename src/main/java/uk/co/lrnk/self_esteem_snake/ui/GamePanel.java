@@ -113,15 +113,28 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setFont(font);
         g.setColor(Color.green);
 
-        String gameOverMessage = "GAME OVER";
-        int gameOverX = getCenteredStringX(g,font,gameOverMessage);
-        int gameOverY = getCenteredStringY(g,font,gameOverMessage) - g.getFontMetrics(font).getHeight();
-        g.drawString(gameOverMessage, gameOverX, gameOverY);
+        if(game.getPreviousHighScore() < game.getScore()) {
 
-        String score = "" + game.getScore();
-        int scoreX = getCenteredStringX(g,font,score);
-        int scoreY = getCenteredStringY(g,font,score);
-        g.drawString(score, scoreX, scoreY);
+            String gameOverMessage = "NEW HIGH SCORE: " + game.getScore();
+            int gameOverX = getCenteredStringX(g,font,gameOverMessage);
+            int gameOverY = getCenteredStringY(g,font,gameOverMessage);
+            g.drawString(gameOverMessage, gameOverX, gameOverY);
+
+        } else {
+
+            String score = "" + game.getScore();
+            int scoreX = getCenteredStringX(g,font,score);
+            int scoreY = getCenteredStringY(g,font,score) - g.getFontMetrics(font).getHeight();
+            g.drawString(score, scoreX, scoreY);
+
+            String gameOverMessage = "HIGH SCORE: " + game.getPreviousHighScore();
+            int gameOverX = getCenteredStringX(g,font,gameOverMessage);
+            int gameOverY = getCenteredStringY(g,font,gameOverMessage);
+            g.drawString(gameOverMessage, gameOverX, gameOverY);
+
+        }
+
+
 
     }
 
