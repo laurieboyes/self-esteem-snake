@@ -13,4 +13,16 @@ public class BookwormGame extends SnakeGame {
         snake = new BookwormSnake();
         snake.placeInWorld(world);
     }
+
+    @Override
+    public int getScore() {
+        int numLettersInSnake = 0;
+        for(Space space : snake.getSnakeSpaces()) {
+            if(((BookwormSpace)space).hasCharacter()) {
+                numLettersInSnake++;
+            }
+        }
+
+        return 7 * numLettersInSnake;
+    }
 }

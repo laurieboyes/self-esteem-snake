@@ -16,8 +16,7 @@ public class BookwormSnake extends Snake {
 
         keepCharactersInSnakePosition();
 
-        snakeSpaces.peekLast().setState(SpaceState.EMPTY);
-        snakeSpaces.removeLast();
+        removePreviousTailEndSpace();
     }
 
     private void keepCharactersInSnakePosition() {
@@ -27,7 +26,7 @@ public class BookwormSnake extends Snake {
         while(true) {
             BookwormSpace previousSegmentSpace = snakeSpacesCopy.peekFirst();
 
-            if(previousSegmentSpace.hasCharacter()) {
+            if(previousSegmentSpace != null && previousSegmentSpace.hasCharacter()) {
                 char charOfPrevSegment = snakeSpacesCopy.peekFirst().getCharacter();
                 segmentToShiftCharInto.setCharacter(charOfPrevSegment);
 
@@ -37,6 +36,21 @@ public class BookwormSnake extends Snake {
             } else {
                 break;
             }
+        }
+    }
+
+    protected void eatSpace(Space space) {
+        super.eatSpace(space);
+
+        boolean containsSnakeSpacesWithoutLetters = false;
+        for(Space snakeSpace : snakeSpaces) {
+            if(!((BookwormSpace) snakeSpace).hasCharacter()) {
+                containsSnakeSpacesWithoutLetters = true;
+            }
+        }
+
+        if(containsSnakeSpacesWithoutLetters) {
+            removePreviousTailEndSpace();
         }
     }
 }

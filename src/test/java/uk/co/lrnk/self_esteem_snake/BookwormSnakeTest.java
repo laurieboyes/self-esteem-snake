@@ -49,7 +49,22 @@ public class BookwormSnakeTest {
     }
 
     @Test
-    public void charactersArePushedDownSnakeWhenNewCharacterEaton() {
+    public void testNoNullPointerWhenShiftSnakeWithNoNonCharacterSpaces() {
+        BookwormWorld world = new BookwormWorld(10,10);
+
+        BookwormSnake snake = new BookwormSnake();
+        snake.placeInWorld(world);
+
+        assertEquals(6,snake.getLength());
+        for(Space space : (LinkedList<Space>)ReflectionTestUtils.getField(snake, "snakeSpaces")) {
+            ((BookwormSpace) space).setCharacter(' ');
+        }
+
+        snake.step();
+    }
+
+    @Test
+    public void charactersArePushedDownSnakeWhenNewCharacterEaten() {
 
         BookwormWorld world = new BookwormWorld(10,10);
 
@@ -73,4 +88,33 @@ public class BookwormSnakeTest {
 
     }
 
+    @Test
+    public void snakeLengthStaysConstantUntilAllInitialDotsReplaced() {
+
+        BookwormWorld world = new BookwormWorld(10,10);
+
+        BookwormSnake snake = new BookwormSnake();
+        snake.placeInWorld(world);
+
+        assertEquals(6, snake.getStartingLength());
+
+        for(BookwormSpace space: (LinkedList<BookwormSpace>) ReflectionTestUtils.getField(snake, "snakeSpaces")) {
+            assertFalse(space.hasCharacter());
+        }
+
+        for (int i = 1; i < 7; i++) {
+            BookwormSpace space = new BookwormSpace(1 + i,1);
+            space.setCharacter(("" + i).charAt(0));
+            snake.eatSpace(space);
+        }
+
+        assertEquals(6, snake.getLength());
+
+        BookwormSpace space = new BookwormSpace(9,1);
+        space.setCharacter('7');
+        snake.eatSpace(space);
+
+        assertEquals(7, snake.getLength());
+
+    }
 }

@@ -27,7 +27,7 @@ public class SnakeGame {
     }
 
     public void startGameAndPlayTillDeath() {
-        int stepTimeInMilliseconds = (int) (0.10 * 1000);
+        int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
         state = GameState.PLAYING;
         while (true) {

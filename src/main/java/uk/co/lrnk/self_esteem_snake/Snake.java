@@ -1,6 +1,7 @@
 package uk.co.lrnk.self_esteem_snake;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Snake {
 
@@ -84,13 +85,18 @@ public class Snake {
 
         snakeSpaces.addFirst(space);
         space.setState(SpaceState.SNAKE);
-        snakeSpaces.peekLast().setState(SpaceState.EMPTY);
-        snakeSpaces.removeLast();
+
+        removePreviousTailEndSpace();
     }
 
     protected void eatSpace(Space space) {
         snakeSpaces.addFirst(space);
         space.setState(SpaceState.SNAKE);
+    }
+
+    protected void removePreviousTailEndSpace(){
+        snakeSpaces.peekLast().setState(SpaceState.EMPTY);
+        snakeSpaces.removeLast();
     }
 
     public void tryToHeadUp() {
@@ -123,5 +129,9 @@ public class Snake {
 
     public int getLength() {
         return snakeSpaces.size();
+    }
+
+    public List<Space> getSnakeSpaces() {
+        return snakeSpaces;
     }
 }
