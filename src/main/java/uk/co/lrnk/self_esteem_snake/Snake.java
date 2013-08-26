@@ -8,7 +8,7 @@ public class Snake {
     private Direction nextStepDirection;
     private World world;
     private int startingLength = 6;
-    private LinkedList<Space> snakeSpaces;
+    protected LinkedList<Space> snakeSpaces;
 
     public Snake() {
         setCurrentDirection(Direction.RIGHT);
@@ -65,20 +65,32 @@ public class Snake {
                 case SNAKE:
                     throw new GameOverHitSelfException();
                 case FOOD:
-                    snakeSpaces.addFirst(nextHeadSpace);
-                    getHeadSpace().setState(SpaceState.SNAKE);
+                    eatSpace(nextHeadSpace);
                     break;
                 default:
-                    snakeSpaces.addFirst(nextHeadSpace);
-                    getHeadSpace().setState(SpaceState.SNAKE);
-                    snakeSpaces.peekLast().setState(SpaceState.EMPTY);
-                    snakeSpaces.removeLast();
+                    moveIntoEmptySpace(nextHeadSpace);
             }
 
         } catch (NoNextSpaceException ex) {
             throw new GameOverHitWallException();
         }
 
+    }
+
+    protected void moveIntoEmptySpace(Space space) {
+        if(space.getState() != SpaceState.EMPTY) {
+            throw new RuntimeException("Snake.moveIntoEmptySpace failed. Space state was: " + space.getState());
+        }
+
+        snakeSpaces.addFirst(space);
+        space.setState(SpaceState.SNAKE);
+        snakeSpaces.peekLast().setState(SpaceState.EMPTY);
+        snakeSpaces.removeLast();
+    }
+
+    protected void eatSpace(Space space) {
+        snakeSpaces.addFirst(space);
+        space.setState(SpaceState.SNAKE);
     }
 
     public void tryToHeadUp() {

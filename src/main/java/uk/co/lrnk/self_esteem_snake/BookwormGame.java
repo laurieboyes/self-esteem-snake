@@ -10,7 +10,7 @@ public class BookwormGame extends SnakeGame {
         previousHighScore = scoreSaver.getSavedScore();
 
         world = new BookwormWorld(20, 12);
-        snake = new Snake();
+        snake = new BookwormSnake();
         snake.placeInWorld(world);
     }
 }

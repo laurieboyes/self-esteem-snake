@@ -303,4 +303,16 @@ public class SnakeTest {
 
         assertEquals(3,snake.getLength());
     }
+
+    @Test(expected = RuntimeException.class)
+    public void testMoveIntoEmptySpaceEmptyCheck() {
+        World world = new World(10,10);
+        Snake snake = new Snake();
+        snake.placeInWorld(world);
+
+        Space fullSpace = new Space(1,1);
+        fullSpace.setState(SpaceState.FOOD);
+
+        snake.moveIntoEmptySpace(fullSpace);
+    }
 }

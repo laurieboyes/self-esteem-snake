@@ -2,7 +2,7 @@ package uk.co.lrnk.self_esteem_snake;
 
 public class BookwormSpace extends Space {
 
-    private char character;
+    private Character character;
 
     public BookwormSpace(int x, int y) {
         super(x, y);
@@ -14,5 +14,13 @@ public class BookwormSpace extends Space {
 
     public void setCharacter(char character) {
         this.character = character;
+    }
+
+    public boolean hasCharacter() {
+        return character != null;
+    }
+
+    public void clearCharacter(){
+        character = null;
     }
 }
