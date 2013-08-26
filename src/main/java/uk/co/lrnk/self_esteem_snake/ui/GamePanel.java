@@ -111,7 +111,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
         Font font = new Font("Monospaced", Font.PLAIN, 11);
         g.setFont(font);
-        g.setColor(Color.green);
+        g.setColor(Color.yellow);
 
         if(game.getPreviousHighScore() < game.getScore()) {
 
@@ -163,7 +163,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
         int topOffset = 0;
 
         g.setFont(new Font("Monospaced", Font.PLAIN, 11));
-        g.setColor(Color.green);
+        g.setColor(Color.yellow);
 
         for (String line : worldString.split("\n"))
             g.drawString(line, leftOffset, topOffset += g.getFontMetrics().getHeight());
