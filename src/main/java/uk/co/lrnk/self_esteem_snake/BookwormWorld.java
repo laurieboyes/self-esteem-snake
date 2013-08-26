@@ -35,7 +35,12 @@ public class BookwormWorld extends World {
 
         BookwormSpace foodSpace = (BookwormSpace) emptySpaces.get(randomNumberGenerator.getRandomNumber(0, emptySpaces.size() - 1));
         foodSpace.setState(SpaceState.FOOD);
-        foodSpace.setCharacter(foodText.charAt(foodCharsEaten++));
+
+        try {
+            foodSpace.setCharacter(foodText.charAt(foodCharsEaten++));
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new GameOverRanOutOfFoodException();
+        }
     }
 
     public List<BookwormSpace> getAllBookwormSpaces() {

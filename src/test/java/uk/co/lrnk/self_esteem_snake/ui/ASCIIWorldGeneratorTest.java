@@ -139,4 +139,25 @@ public class ASCIIWorldGeneratorTest {
         assertEquals(expectedResult,filledInWorld);
     }
 
+    @Test
+    public void testReplaceSpaceCharacterWithSomethingVisible() {
+        ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
+        BookwormWorld world = mock(BookwormWorld.class);
+
+        List<BookwormSpace> spaceList = new ArrayList<BookwormSpace>();
+
+        BookwormSpace foodSpace = new BookwormSpace(5,8);
+        foodSpace.setState(SpaceState.FOOD);
+        foodSpace.setCharacter(' ');
+        spaceList.add(foodSpace);
+
+        when(world.getAllBookwormSpaces()).thenReturn(spaceList);
+
+        String placeHolderString = "|5-8|";
+        String expectedResult = "|_|";
+        String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
+
+        assertEquals(expectedResult,filledInWorld);
+    }
+
 }

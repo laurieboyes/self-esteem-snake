@@ -66,7 +66,7 @@ public class ASCIIWorldGenerator {
                     stateChar = 'O';
                     break;
                 case FOOD:
-                    stateChar = space.getCharacter();
+                    stateChar = (space.getCharacter() == ' ') ? '_' : space.getCharacter();
                     break;
                 default:
                     throw new RuntimeException("ASCIIWorldGenerator.fillInWorld(String, BookwormWorld): Attempted to draw space with unimplemented state");
