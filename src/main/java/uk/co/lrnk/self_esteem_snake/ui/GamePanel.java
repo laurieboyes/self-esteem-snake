@@ -1,5 +1,7 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
+import uk.co.lrnk.self_esteem_snake.BookwormGame;
+import uk.co.lrnk.self_esteem_snake.BookwormWorld;
 import uk.co.lrnk.self_esteem_snake.GameState;
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 
@@ -59,7 +61,9 @@ public class GamePanel extends JPanel implements SnakeGameView {
             startNewGame = false;
 
             gameInitComplete = false;
-            game = new SnakeGame();
+
+//            TODO make dynamic
+            game = new BookwormGame();
             game.initGame();
             snakeKeyListener.setSnake(game.getSnake());
             game.setView(this);
@@ -101,7 +105,8 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        drawWorldString(g, generator.getWorldString(game.getWorld()));
+//        TODO make dynamic
+        drawWorldString(g, generator.getWorldString((BookwormWorld)game.getWorld()));
     }
 
     private void drawGameOver(Graphics2D g) {

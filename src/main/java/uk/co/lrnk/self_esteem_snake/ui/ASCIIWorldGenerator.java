@@ -1,13 +1,23 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
+import uk.co.lrnk.self_esteem_snake.BookwormSpace;
+import uk.co.lrnk.self_esteem_snake.BookwormWorld;
 import uk.co.lrnk.self_esteem_snake.Space;
 import uk.co.lrnk.self_esteem_snake.World;
 
 public class ASCIIWorldGenerator {
 
     public String getWorldString(World world) {
-        int h = world.getHeight();
-        int w = world.getWidth();
+        int h = world.getNumRows();
+        int w = world.getNumColumns();
+
+        String placeholderWorld = getPlaceholderWorld(w, h);
+        return fillInWorld(placeholderWorld, world);
+    }
+
+    public String getWorldString(BookwormWorld world) {
+        int h = world.getNumRows();
+        int w = world.getNumColumns();
 
         String placeholderWorld = getPlaceholderWorld(w, h);
         return fillInWorld(placeholderWorld, world);
@@ -18,7 +28,7 @@ public class ASCIIWorldGenerator {
         String resultingWorld = placeholderWorld;
         for (Space space : world.getAllSpaces()) {
 
-            Character stateChar = null;
+            Character stateChar;
 
             switch (space.getState()) {
                 case EMPTY:
@@ -31,7 +41,7 @@ public class ASCIIWorldGenerator {
                     stateChar = '~';
                     break;
                 default:
-                    throw new RuntimeException("ASCIIWorldGenerator.fillInWorld: Attempted to draw space with unimplemented state");
+                    throw new RuntimeException("ASCIIWorldGenerator.fillInWorld(String, World): Attempted to draw space with unimplemented state");
             }
 
             String placeHolder = space.getX() + "-" + space.getY();
@@ -40,6 +50,35 @@ public class ASCIIWorldGenerator {
 
         return resultingWorld;
     }
+
+    private String fillInWorld(String placeholderWorld, BookwormWorld world) {
+
+        String resultingWorld = placeholderWorld;
+        for (BookwormSpace space : world.getAllBookwormSpaces()) {
+
+            Character stateChar;
+
+            switch (space.getState()) {
+                case EMPTY:
+                    stateChar = ' ';
+                    break;
+                case SNAKE:
+                    stateChar = 'O';
+                    break;
+                case FOOD:
+                    stateChar = space.getCharacter();
+                    break;
+                default:
+                    throw new RuntimeException("ASCIIWorldGenerator.fillInWorld(String, BookwormWorld): Attempted to draw space with unimplemented state");
+            }
+
+            String placeHolder = space.getX() + "-" + space.getY();
+            resultingWorld = resultingWorld.replaceFirst(placeHolder, stateChar.toString());
+        }
+
+        return resultingWorld;
+    }
+
 
     private String getPlaceholderWorld(int w, int h) {
 

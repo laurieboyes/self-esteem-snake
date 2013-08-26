@@ -19,7 +19,7 @@ public class Snake {
         this.world = world;
 
         int headSpaceX = startingLength;
-        int headSpaceY = world.getHeight() - 1;
+        int headSpaceY = world.getNumRows() - 1;
 
         Space headSpace = world.getSpace(headSpaceX, headSpaceY);
 

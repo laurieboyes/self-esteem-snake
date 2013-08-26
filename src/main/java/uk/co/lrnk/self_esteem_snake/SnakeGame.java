@@ -5,13 +5,12 @@ import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
 public class SnakeGame {
 
-    World world;
-    Snake snake;
-    GameState state = GameState.PLAYING;
-    int stepTimeInMilliseconds = (int) (0.15 * 1000);
-    SnakeGameView view;
-    int previousHighScore;
-    ScoreSaver scoreSaver;
+    protected World world;
+    protected Snake snake;
+    private GameState state = GameState.PLAYING;
+    private SnakeGameView view;
+    protected int previousHighScore;
+    protected ScoreSaver scoreSaver;
 
     public void setView(SnakeGameView view) {
         this.view = view;
@@ -28,6 +27,7 @@ public class SnakeGame {
     }
 
     public void startGameAndPlayTillDeath() {
+        int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
         state = GameState.PLAYING;
         while (true) {

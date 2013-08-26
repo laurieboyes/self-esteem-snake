@@ -4,9 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import uk.co.lrnk.self_esteem_snake.Space;
-import uk.co.lrnk.self_esteem_snake.SpaceState;
-import uk.co.lrnk.self_esteem_snake.World;
+import uk.co.lrnk.self_esteem_snake.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,6 +110,33 @@ public class ASCIIWorldGeneratorTest {
         String expected = Resources.toString(Resources.getResource("uk/co/lrnk/self_esteem_snake/ui/empty-world.txt"), Charsets.UTF_8);
 
         assertEquals(expected, generator.getWorldString(world));
+    }
+
+    @Test
+    public void testFillInBookwormWorld() {
+        ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
+        BookwormWorld world = mock(BookwormWorld.class);
+
+        List<BookwormSpace> spaceList = new ArrayList<BookwormSpace>();
+
+        spaceList.add(new BookwormSpace(2,3));
+
+        BookwormSpace snakeSpace = new BookwormSpace(5,7);
+        snakeSpace.setState(SpaceState.SNAKE);
+        spaceList.add(snakeSpace);
+
+        BookwormSpace foodSpace = new BookwormSpace(5,8);
+        foodSpace.setState(SpaceState.FOOD);
+        foodSpace.setCharacter('L');
+        spaceList.add(foodSpace);
+
+        when(world.getAllBookwormSpaces()).thenReturn(spaceList);
+
+        String placeHolderString = "|2-3|5-7|5-8|";
+        String expectedResult = "| |O|L|";
+        String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
+
+        assertEquals(expectedResult,filledInWorld);
     }
 
 }

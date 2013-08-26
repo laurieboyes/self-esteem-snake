@@ -6,39 +6,39 @@ import java.util.List;
 
 public class World {
 
-    private Space[][] spaces;
-    private int heightYLength;
-    private int widthXLength = 20;
+    protected Space[][] spaces;
+    private int numRows;
+    private int numColumns;
     RandomNumberGenerator randomNumberGenerator;
 
-    public World(int widthXLength, int heightYLength) {
+    public World(int numColumns, int numRows) {
 
-        if(widthXLength < 8) {
-            throw new GameInitException("World width " + widthXLength + " too small. Must be at least 8");
+        if(numColumns < 8) {
+            throw new GameInitException("World width " + numColumns + " too small. Must be at least 8");
         }
-        if(heightYLength < 2) {
-            throw new GameInitException("World width " + heightYLength + " too small. Must be at least 2");
+        if(numRows < 2) {
+            throw new GameInitException("World height " + numRows + " too small. Must be at least 2");
         }
 
-        this.widthXLength = widthXLength;
-        this.heightYLength = heightYLength;
+        this.numColumns = numColumns;
+        this.numRows = numRows;
         randomNumberGenerator = new RandomNumberGenerator();
-        initBoard(widthXLength, heightYLength);
+        initBoard(numColumns, numRows);
     }
 
-    public int getHeight() {
-        return heightYLength;
+    public int getNumRows() {
+        return numRows;
     }
 
-    public int getWidth() {
-        return widthXLength;
+    public int getNumColumns() {
+        return numColumns;
     }
 
     public void setRandomNumberGenerator(RandomNumberGenerator randomNumberGenerator) {
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
-    private void initBoard(int xLength, int yLength) {
+    protected void initBoard(int xLength, int yLength) {
 
         spaces = new Space[xLength][yLength];
 
@@ -74,7 +74,7 @@ public class World {
     }
 
     public Space getInitialSnakeHeadSpace() {
-        return getSpace(widthXLength / 2, heightYLength - 1);
+        return getSpace(numColumns / 2, numRows - 1);
     }
 
     public Space getSpace(int x, int y) {
