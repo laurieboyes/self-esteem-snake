@@ -47,11 +47,11 @@ public class ASCIIWorldGenerator {
 
         addTopBorder(w, worldString);
 
-        worldString.append(System.getProperty("line.separator"));
+        worldString.append('\n');
 
         for (int rowNumber = 0; rowNumber < h; rowNumber++) {
             addRowWithPlaceholders(w, rowNumber, worldString);
-            worldString.append(System.getProperty("line.separator"));
+            worldString.append('\n');
         }
 
         addBottomBorder(w, worldString);
