@@ -20,6 +20,7 @@ public class SnakeGameInPanelRunner {
         frame.getContentPane().add(gamePanel);
         frame.setPreferredSize(new Dimension(325, 270));
         frame.pack();
+        frame.setResizable(false);
         frame.setVisible(true);
         return gamePanel;
     }

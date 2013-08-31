@@ -1,8 +1,6 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
-import uk.co.lrnk.self_esteem_snake.BookwormGame;
-import uk.co.lrnk.self_esteem_snake.BookwormWorld;
-import uk.co.lrnk.self_esteem_snake.SnakeGame;
+import uk.co.lrnk.self_esteem_snake.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +8,9 @@ import java.awt.*;
 public class GamePanel extends JPanel implements SnakeGameView {
 
     SnakeGame game;
-    GameState gameState = GameState.READY_TO_START_GAME;
+    GameState gameState = GameState.START_MENU;
+
+    StartMenu startMenu;
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
 
@@ -18,9 +18,10 @@ public class GamePanel extends JPanel implements SnakeGameView {
         setFocusable(true);
         requestFocusInWindow();
 
+        startMenu = new StartMenu(this);
+
         generator = new ASCIIWorldGenerator();
         snakeKeyListener = new SnakeKeyListener();
-        addKeyListener(snakeKeyListener);
 
         addKeyListener(new GameKeyListener(this));
     }
@@ -42,10 +43,12 @@ public class GamePanel extends JPanel implements SnakeGameView {
             game = new BookwormGame();
             game.initGame();
             snakeKeyListener.setSnake(game.getSnake());
+            addKeyListener(snakeKeyListener);
             game.setView(this);
             gameState = GameState.PLAYING;
             game.startGameAndPlayTillDeath();
             gameState = GameState.GAME_OVER;
+            removeKeyListener(snakeKeyListener);
         }
 
     }
@@ -63,6 +66,9 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
     private void doPaint(Graphics2D g) {
         switch (gameState) {
+            case START_MENU:
+                drawStartMenu(g);
+                break;
             case LOADING:
                 g.setColor(Color.BLACK);
                 g.fillRect(0, 0, getWidth(), getHeight());
@@ -75,6 +81,68 @@ public class GamePanel extends JPanel implements SnakeGameView {
                 break;
         }
     }
+
+    private void drawStartMenu(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        int leftOffset = 10;
+        int lineHeight = g.getFontMetrics().getHeight();
+
+        g.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        g.setColor(Color.green);
+
+        g.scale(1, 0.75);
+        drawTitle(g, leftOffset, 0, lineHeight);
+        g.scale(1, 1.25);
+        drawGameTypeSelect(g, leftOffset, 210, lineHeight);
+        drawDifficultySelect(g, leftOffset, 230, lineHeight);
+
+    }
+
+    private void drawTitle(Graphics2D g, int leftOffset, int topOffset, int lineHeight) {
+        for (String line : startMenu.getTitle().split("\n")) {
+            g.drawString(line, leftOffset, topOffset += lineHeight);
+        }
+        topOffset += lineHeight;
+    }
+
+    private void drawGameTypeSelect(Graphics2D g, int leftOffset, int topOffset, int lineHeight) {
+        String gameTypeDescription = "Game type: ";
+        g.drawString(gameTypeDescription, leftOffset, topOffset);
+        leftOffset += g.getFontMetrics().getWidths()[0] * (gameTypeDescription.length() + 1);
+        int menuItemNumber = 0;
+        for(GameType type : GameType.values()) {
+            menuItemNumber++;
+
+            g.drawString(type.name(), leftOffset, topOffset);
+
+            if(menuItemNumber != GameType.values().length) {
+                leftOffset += g.getFontMetrics().getWidths()[0] * (type.name().length() + 1);
+                g.drawString("/", leftOffset, topOffset);
+                leftOffset += g.getFontMetrics().getWidths()[0] * 2;
+            }
+        }
+    }
+
+    private void drawDifficultySelect(Graphics2D g, int leftOffset, int topOffset, int lineHeight) {
+        String difficultyDescription = "Difficulty: ";
+        g.drawString(difficultyDescription, leftOffset, topOffset);
+        leftOffset += g.getFontMetrics().getWidths()[0] * (difficultyDescription.length() + 1);
+        int menuItemNumber = 0;
+        for(Difficulty difficulty : Difficulty.values()) {
+            menuItemNumber++;
+
+            g.drawString(difficulty.name(), leftOffset, topOffset);
+
+            if(menuItemNumber != Difficulty.values().length) {
+                leftOffset += g.getFontMetrics().getWidths()[0] * (difficulty.name().length() + 1);
+                g.drawString("/", leftOffset, topOffset);
+                leftOffset += g.getFontMetrics().getWidths()[0] * 2;
+            }
+        }
+    }
+
 
     private void drawPlaying(Graphics2D g) {
         g.setColor(Color.BLACK);
@@ -143,8 +211,9 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setFont(new Font("Monospaced", Font.PLAIN, 11));
         g.setColor(Color.yellow);
 
-        for (String line : worldString.split("\n"))
+        for (String line : worldString.split("\n")) {
             g.drawString(line, leftOffset, topOffset += g.getFontMetrics().getHeight());
+        }
     }
 
     @Override
