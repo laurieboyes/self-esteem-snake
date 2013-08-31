@@ -9,11 +9,11 @@ public class SnakeGameInPanelRunner {
 
     public static void main(String[] args) {
 
-        GamePanel gamePanel = getGamePanel();
+        GamePanel gamePanel = createGamePanel();
         gamePanel.start();
     }
 
-    private static GamePanel getGamePanel() {
+    private static GamePanel createGamePanel() {
         GamePanel gamePanel = new GamePanel();
         JFrame frame = new JFrame("Self Esteem Snake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

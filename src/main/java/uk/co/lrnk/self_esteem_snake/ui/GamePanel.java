@@ -2,54 +2,33 @@ package uk.co.lrnk.self_esteem_snake.ui;
 
 import uk.co.lrnk.self_esteem_snake.BookwormGame;
 import uk.co.lrnk.self_esteem_snake.BookwormWorld;
-import uk.co.lrnk.self_esteem_snake.GameState;
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel implements SnakeGameView {
 
     SnakeGame game;
-    boolean startNewGame = true;
-    boolean gameInitComplete = false;
+    GameState gameState = GameState.READY_TO_START_GAME;
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
 
     public GamePanel() {
-        generator = new ASCIIWorldGenerator();
-
-        snakeKeyListener = new SnakeKeyListener();
-
         setFocusable(true);
         requestFocusInWindow();
+
+        generator = new ASCIIWorldGenerator();
+        snakeKeyListener = new SnakeKeyListener();
         addKeyListener(snakeKeyListener);
 
-        KeyAdapter restartListener = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    System.exit(0);
-                }
-
-                if (game.getState() == GameState.GAME_OVER &&
-                        e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    startNewGame = true;
-                }
-            }
-        };
-
-        addKeyListener(restartListener);
-
+        addKeyListener(new GameKeyListener(this));
     }
 
     public void start() {
 
         while (true) {
-            while (!startNewGame) {
+            while (gameState != GameState.READY_TO_START_GAME) {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -58,17 +37,15 @@ public class GamePanel extends JPanel implements SnakeGameView {
                 }
             }
 
-            startNewGame = false;
-
-            gameInitComplete = false;
-
+            gameState = GameState.LOADING;
 //            TODO make dynamic
             game = new BookwormGame();
             game.initGame();
             snakeKeyListener.setSnake(game.getSnake());
             game.setView(this);
-            gameInitComplete = true;
+            gameState = GameState.PLAYING;
             game.startGameAndPlayTillDeath();
+            gameState = GameState.GAME_OVER;
         }
 
     }
@@ -76,22 +53,20 @@ public class GamePanel extends JPanel implements SnakeGameView {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if(gameInitComplete){
-            try {
-                paintSnakeGame((Graphics2D) g);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.exit(1);
-            }
-        } else {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
+        try {
+            doPaint((Graphics2D) g);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
-    private void paintSnakeGame(Graphics2D g) {
-        switch (game.getState()) {
+    private void doPaint(Graphics2D g) {
+        switch (gameState) {
+            case LOADING:
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                break;
             case PLAYING:
                 drawPlaying(g);
                 break;
@@ -106,7 +81,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.fillRect(0, 0, getWidth(), getHeight());
 
 //        TODO make dynamic
-        drawWorldString(g, generator.getWorldString((BookwormWorld)game.getWorld()));
+        drawWorldString(g, generator.getWorldString((BookwormWorld) game.getWorld()));
     }
 
     private void drawGameOver(Graphics2D g) {
@@ -118,49 +93,47 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setFont(font);
         g.setColor(Color.yellow);
 
-        if(game.getPreviousHighScore() < game.getScore()) {
+        if (game.getPreviousHighScore() < game.getScore()) {
 
             String gameOverMessage = "NEW HIGH SCORE: " + game.getScore();
-            int gameOverX = getCenteredStringX(g,font,gameOverMessage);
-            int gameOverY = getCenteredStringY(g,font,gameOverMessage);
+            int gameOverX = getCenteredStringX(g, font, gameOverMessage);
+            int gameOverY = getCenteredStringY(g, font, gameOverMessage);
             g.drawString(gameOverMessage, gameOverX, gameOverY);
 
         } else {
 
             String score = "" + game.getScore();
-            int scoreX = getCenteredStringX(g,font,score);
-            int scoreY = getCenteredStringY(g,font,score) - g.getFontMetrics(font).getHeight();
+            int scoreX = getCenteredStringX(g, font, score);
+            int scoreY = getCenteredStringY(g, font, score) - g.getFontMetrics(font).getHeight();
             g.drawString(score, scoreX, scoreY);
 
             String gameOverMessage = "HIGH SCORE: " + game.getPreviousHighScore();
-            int gameOverX = getCenteredStringX(g,font,gameOverMessage);
-            int gameOverY = getCenteredStringY(g,font,gameOverMessage);
+            int gameOverX = getCenteredStringX(g, font, gameOverMessage);
+            int gameOverY = getCenteredStringY(g, font, gameOverMessage);
             g.drawString(gameOverMessage, gameOverX, gameOverY);
 
         }
 
-
-
     }
 
     private int getCenteredStringX(Graphics2D g, Font f, String string) {
-        FontMetrics fm   = g.getFontMetrics(f);
+        FontMetrics fm = g.getFontMetrics(f);
         java.awt.geom.Rectangle2D rect = fm.getStringBounds(string, g);
 
-        int textWidth  = (int)(rect.getWidth());
+        int textWidth = (int) (rect.getWidth());
         int panelWidth = this.getWidth();
 
-        return (panelWidth  - textWidth) / 2;
+        return (panelWidth - textWidth) / 2;
     }
 
     private int getCenteredStringY(Graphics2D g, Font f, String string) {
-        FontMetrics fm   = g.getFontMetrics(f);
+        FontMetrics fm = g.getFontMetrics(f);
         java.awt.geom.Rectangle2D rect = fm.getStringBounds(string, g);
 
-        int textHeight = (int)(rect.getHeight());
-        int panelHeight= this.getHeight();
+        int textHeight = (int) (rect.getHeight());
+        int panelHeight = this.getHeight();
 
-        return (panelHeight - textHeight) / 2  + fm.getAscent();
+        return (panelHeight - textHeight) / 2 + fm.getAscent();
     }
 
     private void drawWorldString(Graphics2D g, String worldString) {
