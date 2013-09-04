@@ -1,11 +1,18 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
-import uk.co.lrnk.self_esteem_snake.*;
+import uk.co.lrnk.self_esteem_snake.BookwormGame;
+import uk.co.lrnk.self_esteem_snake.BookwormWorld;
+import uk.co.lrnk.self_esteem_snake.SnakeGame;
+import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.Difficulty;
+import uk.co.lrnk.self_esteem_snake.config.GameType;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements SnakeGameView {
+
+    Config config;
 
     SnakeGame game;
     GameState gameState = GameState.START_MENU;
@@ -26,6 +33,10 @@ public class GamePanel extends JPanel implements SnakeGameView {
         addKeyListener(new GameKeyListener(this));
     }
 
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
     public void start() {
 
         while (true) {
@@ -39,8 +50,17 @@ public class GamePanel extends JPanel implements SnakeGameView {
             }
 
             gameState = GameState.LOADING;
-//            TODO make dynamic
-            game = new BookwormGame();
+
+            switch ((GameType) config.getConfigChoice("gameType")) {
+                case SELF_ESTEEM_SNAKE:
+                    game = new SnakeGame();
+                    break;
+                case BOOKWORM:
+                    game = new BookwormGame();
+                    break;
+            }
+
+            game.applyConfig(config);
             game.initGame();
             snakeKeyListener.setSnake(game.getSnake());
             addKeyListener(snakeKeyListener);
@@ -148,8 +168,14 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-//        TODO make dynamic
-        drawWorldString(g, generator.getWorldString((BookwormWorld) game.getWorld()));
+        switch ((GameType) config.getConfigChoice("gameType")) {
+            case SELF_ESTEEM_SNAKE:
+                drawWorldString(g, generator.getWorldString(game.getWorld()));
+                break;
+            case BOOKWORM:
+                drawWorldString(g, generator.getWorldString((BookwormWorld) game.getWorld()));
+                break;
+        }
     }
 
     private void drawGameOver(Graphics2D g) {

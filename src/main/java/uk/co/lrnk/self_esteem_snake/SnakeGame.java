@@ -1,5 +1,7 @@
 package uk.co.lrnk.self_esteem_snake;
 
+import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.Difficulty;
 import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
@@ -10,6 +12,8 @@ public class SnakeGame {
     private SnakeGameView view;
     protected int previousHighScore;
     protected ScoreSaver scoreSaver;
+    private Difficulty difficulty = Difficulty.NORMAL;
+    private int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
     public void setView(SnakeGameView view) {
         this.view = view;
@@ -25,8 +29,20 @@ public class SnakeGame {
         snake.placeInWorld(world);
     }
 
+    public void applyConfig(Config config) {
+        difficulty = (Difficulty)config.getConfigChoice("difficulty");
+
+        switch (difficulty) {
+            case NORMAL:
+                stepTimeInMilliseconds = (int) (0.15 * 1000);
+                break;
+            case HARD:
+                stepTimeInMilliseconds = (int) (0.10 * 1000);
+                break;
+        }
+    }
+
     public void startGameAndPlayTillDeath() {
-        int stepTimeInMilliseconds = (int) (0.15 * 1000);
 
         while (true) {
             try {

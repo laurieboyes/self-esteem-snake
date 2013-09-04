@@ -1,5 +1,8 @@
 package uk.co.lrnk.self_esteem_snake;
 
+import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.Difficulty;
+import uk.co.lrnk.self_esteem_snake.config.GameType;
 import uk.co.lrnk.self_esteem_snake.ui.GamePanel;
 
 import javax.swing.*;
@@ -10,6 +13,13 @@ public class SnakeGameInPanelRunner {
     public static void main(String[] args) {
 
         GamePanel gamePanel = createGamePanel();
+
+        Config config = new Config();
+        config.setConfigChoice("gameType", GameType.SELF_ESTEEM_SNAKE);
+        config.setConfigChoice("difficulty", Difficulty.NORMAL);
+
+        gamePanel.setConfig(config);
+
         gamePanel.start();
     }
 
