@@ -3,17 +3,26 @@ package uk.co.lrnk.self_esteem_snake.ui;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import uk.co.lrnk.self_esteem_snake.GameInitException;
+import uk.co.lrnk.self_esteem_snake.config.Config;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-public class StartMenu {
+public class StartMenu extends KeyAdapter {
 
-    private StartMenuKeyListener startMenuKeyListener;
     private String title;
+    private GamePanel gamePanel;
+    private Config config;
+
+    private int currentConfigItem;
 
     public StartMenu(GamePanel gamePanel) {
-        startMenuKeyListener = new StartMenuKeyListener(gamePanel);
-        gamePanel.addKeyListener(startMenuKeyListener);
+        this.gamePanel = gamePanel;
+        gamePanel.addKeyListener(this);
+
+        config = new Config();
+
         title = readTitleFromFile();
     }
 
@@ -27,5 +36,26 @@ public class StartMenu {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                gamePanel.removeKeyListener(this);
+                gamePanel.setConfig(config);
+                gamePanel.gameState = GameState.READY_TO_START_GAME;
+                break;
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+                break;
+            case KeyEvent.VK_DOWN:
+                nextContentItem();
+                break;
+        }
+    }
+
+    private void nextContentItem() {
+        currentConfigItem = (currentConfigItem + 1) % config.getNumberOfConfigItems();
     }
 }

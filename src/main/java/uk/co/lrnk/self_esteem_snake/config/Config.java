@@ -46,5 +46,9 @@ public class Config {
         return new ConfigItem(choices);
     }
 
+    public int getNumberOfConfigItems() {
+        return configItemMap.size();
+    }
+
 
 }
