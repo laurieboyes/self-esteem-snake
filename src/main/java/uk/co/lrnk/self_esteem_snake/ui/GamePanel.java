@@ -28,11 +28,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
         requestFocusInWindow();
 
         startMenu = new StartMenu(this);
-
         generator = new ASCIIWorldGenerator();
-        snakeKeyListener = new SnakeKeyListener();
-
-        addKeyListener(new GameKeyListener(this));
     }
 
     public void setConfig(Config config) {
@@ -40,6 +36,9 @@ public class GamePanel extends JPanel implements SnakeGameView {
     }
 
     public void start() {
+
+        snakeKeyListener = new SnakeKeyListener();
+        addKeyListener(new GameKeyListener(this));
 
         while (true) {
             while (gameState != GameState.READY_TO_START_GAME) {
@@ -69,9 +68,11 @@ public class GamePanel extends JPanel implements SnakeGameView {
             game.setView(this);
             gameState = GameState.PLAYING;
             game.startGameAndPlayTillDeath();
-            gameState = GameState.GAME_OVER;
             removeKeyListener(snakeKeyListener);
-            refreshView();
+            if(!game.wasInterrupted()) {
+                gameState = GameState.GAME_OVER;
+                refreshView();
+            }
         }
 
     }
@@ -255,5 +256,12 @@ public class GamePanel extends JPanel implements SnakeGameView {
     @Override
     public void refreshView() {
         repaint();
+    }
+
+    public void returnToStartMenu() {
+        game.interrupt();
+        gameState = GameState.START_MENU;
+        addKeyListener(startMenu);
+        refreshView();
     }
 }

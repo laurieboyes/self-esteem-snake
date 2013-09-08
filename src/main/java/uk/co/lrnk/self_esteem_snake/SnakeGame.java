@@ -14,6 +14,7 @@ public class SnakeGame {
     protected ScoreSaver scoreSaver;
     private Difficulty difficulty = Difficulty.NORMAL;
     private int stepTimeInMilliseconds = (int) (0.15 * 1000);
+    private boolean interrupt = false;
 
     public void setView(SnakeGameView view) {
         this.view = view;
@@ -47,6 +48,9 @@ public class SnakeGame {
         while (true) {
             try {
                 Thread.sleep(stepTimeInMilliseconds);
+                if(interrupt) {
+                    break;
+                }
                 step();
                 view.refreshView();
             } catch (GameOverException ex) {
@@ -83,5 +87,13 @@ public class SnakeGame {
 
     public int getPreviousHighScore() {
         return previousHighScore;
+    }
+
+    public void interrupt() {
+        interrupt = true;
+    }
+
+    public boolean wasInterrupted() {
+        return interrupt;
     }
 }

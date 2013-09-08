@@ -21,7 +21,7 @@ public class GameKeyListener extends KeyAdapter {
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
-                System.exit(0);
+                panel.returnToStartMenu();
         }
     }
 }
