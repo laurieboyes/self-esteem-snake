@@ -3,8 +3,9 @@ package uk.co.lrnk.self_esteem_snake.config;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import java.util.List;
+
+import static junit.framework.Assert.*;
 
 public class ConfigTest {
 
@@ -55,6 +56,14 @@ public class ConfigTest {
 
         assertEquals(GameType.SELF_ESTEEM_SNAKE, gameType.getSelectedChoice().getState());
 
+    }
+
+    @Test
+    public void testGetConfigItems() {
+        Config config = new Config();
+        List<ConfigItem> configItems = config.getConfigItems();
+        assertFalse(configItems.isEmpty());
+        assertNotNull(configItems.get(0));
     }
 
 }

@@ -1,9 +1,6 @@
 package uk.co.lrnk.self_esteem_snake.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Config {
 
@@ -21,33 +18,32 @@ public class Config {
         return configItemMap.get(configItemKey).getSelectedChoice().getState();
     }
 
-//    todo temporary? currently used only for testing config
-    public ConfigItemChoiceState setConfigChoice(String configItemKey, ConfigItemChoiceState state) {
-        return configItemMap.get(configItemKey).getSelectedChoice().state = state;
-    }
-
     private ConfigItem getGameTypeConfig() {
 
         List<ConfigItemChoice> choices = new ArrayList<ConfigItemChoice>();
 
-        choices.add(new ConfigItemChoice(GameType.SELF_ESTEEM_SNAKE));
-        choices.add(new ConfigItemChoice(GameType.BOOKWORM));
+        choices.add(new ConfigItemChoice(GameType.SELF_ESTEEM_SNAKE, "Snake"));
+        choices.add(new ConfigItemChoice(GameType.BOOKWORM, "Bookworm"));
 
-        return new ConfigItem(choices);
+        return new ConfigItem(choices, "GAME TYPE");
     }
 
     private ConfigItem getDifficultyConfig() {
 
         List<ConfigItemChoice> choices = new ArrayList<ConfigItemChoice>();
 
-        choices.add(new ConfigItemChoice(Difficulty.NORMAL));
-        choices.add(new ConfigItemChoice(Difficulty.HARD));
+        choices.add(new ConfigItemChoice(Difficulty.NORMAL, "Normal"));
+        choices.add(new ConfigItemChoice(Difficulty.HARD, "Hard"));
 
-        return new ConfigItem(choices);
+        return new ConfigItem(choices, "DIFFICULTY");
     }
 
     public int getNumberOfConfigItems() {
         return configItemMap.size();
+    }
+
+    public List<ConfigItem> getConfigItems() {
+        return new ArrayList<ConfigItem>(configItemMap.values());
     }
 
 

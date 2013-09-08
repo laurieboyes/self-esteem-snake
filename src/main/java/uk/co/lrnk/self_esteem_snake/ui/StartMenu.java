@@ -4,10 +4,12 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import uk.co.lrnk.self_esteem_snake.GameInitException;
 import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.ConfigItem;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 
 public class StartMenu extends KeyAdapter {
 
@@ -38,6 +40,10 @@ public class StartMenu extends KeyAdapter {
         return title;
     }
 
+    public int getCurrentConfigItem() {
+        return currentConfigItem;
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -50,12 +56,43 @@ public class StartMenu extends KeyAdapter {
                 System.exit(0);
                 break;
             case KeyEvent.VK_DOWN:
-                nextContentItem();
+                nextConfigItem();
+                gamePanel.refreshView();
+                break;
+            case KeyEvent.VK_UP:
+                prevConfigItem();
+                gamePanel.refreshView();
+                break;
+            case KeyEvent.VK_RIGHT:
+                nextConfigItemChoice();
+                gamePanel.refreshView();
+                break;
+            case KeyEvent.VK_LEFT:
+                prevConfigItemChoice();
+                gamePanel.refreshView();
                 break;
         }
     }
 
-    private void nextContentItem() {
+    private void nextConfigItem() {
         currentConfigItem = (currentConfigItem + 1) % config.getNumberOfConfigItems();
+    }
+
+    private void prevConfigItem() {
+        currentConfigItem = Math.abs(currentConfigItem - 1) % config.getNumberOfConfigItems();
+    }
+
+    private void nextConfigItemChoice() {
+        ConfigItem configItem = config.getConfigItems().get(currentConfigItem);
+        configItem.nextChoice();
+    }
+
+    private void prevConfigItemChoice() {
+        ConfigItem configItem = config.getConfigItems().get(currentConfigItem);
+        configItem.prevChoice();
+    }
+
+    public List<ConfigItem> getConfigItems(){
+        return config.getConfigItems();
     }
 }

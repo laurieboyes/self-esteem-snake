@@ -3,6 +3,7 @@ package uk.co.lrnk.self_esteem_snake;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.ConfigItemChoice;
 import uk.co.lrnk.self_esteem_snake.config.Difficulty;
 import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
@@ -79,8 +80,12 @@ public class SnakeGameTest {
 
     @Test
     public void testApplyConfig() {
+
         Config config = new Config();
-        config.setConfigChoice("difficulty", Difficulty.HARD);
+
+        int indexOfDifficultyConfigItem = 1;
+        ConfigItemChoice choice = config.getConfigItems().get(indexOfDifficultyConfigItem).getSelectedChoice();
+        ReflectionTestUtils.setField(choice,"state", Difficulty.HARD);
 
         SnakeGame game = new SnakeGame();
 
