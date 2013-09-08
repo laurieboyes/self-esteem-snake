@@ -58,9 +58,11 @@ public class ASCIIWorldGeneratorTest {
         int h = 4;
 
         String expected = Resources.toString(Resources.getResource("uk/co/lrnk/self_esteem_snake/ui/7x4placeholder-world.txt"), Charsets.UTF_8);
+        expected = normaliseLineEndings(expected);
+
         String placeholderWorld = ReflectionTestUtils.invokeMethod(generator, "getPlaceholderWorld", w, h);
 
-        assertEquals(expected,placeholderWorld);
+        assertEquals(expected, placeholderWorld);
 
     }
 
@@ -70,16 +72,16 @@ public class ASCIIWorldGeneratorTest {
         World world = mock(World.class);
 
         List<Space> spaceList = new ArrayList<Space>();
-        spaceList.add(new Space(2,3));
-        spaceList.add(new Space(5,7));
-        spaceList.add(new Space(8,1));
+        spaceList.add(new Space(2, 3));
+        spaceList.add(new Space(5, 7));
+        spaceList.add(new Space(8, 1));
         when(world.getAllSpaces()).thenReturn(spaceList);
 
         String placeHolderString = " |8-1| |5-7| |2-3| derp derp";
         String expectedResult = " | | | | | | derp derp";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
-        assertEquals(expectedResult,filledInWorld);
+        assertEquals(expectedResult, filledInWorld);
     }
 
     @Test
@@ -88,8 +90,8 @@ public class ASCIIWorldGeneratorTest {
         World world = mock(World.class);
 
         List<Space> spaceList = new ArrayList<Space>();
-        spaceList.add(new Space(2,3));
-        Space snakeSpace = new Space(5,7);
+        spaceList.add(new Space(2, 3));
+        Space snakeSpace = new Space(5, 7);
         snakeSpace.setState(SpaceState.SNAKE);
         spaceList.add(snakeSpace);
         when(world.getAllSpaces()).thenReturn(spaceList);
@@ -98,7 +100,7 @@ public class ASCIIWorldGeneratorTest {
         String expectedResult = "| |O|";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
-        assertEquals(expectedResult,filledInWorld);
+        assertEquals(expectedResult, filledInWorld);
     }
 
     @Test
@@ -108,6 +110,7 @@ public class ASCIIWorldGeneratorTest {
         ASCIIWorldGenerator generator = new ASCIIWorldGenerator();
 
         String expected = Resources.toString(Resources.getResource("uk/co/lrnk/self_esteem_snake/ui/empty-world.txt"), Charsets.UTF_8);
+        expected = normaliseLineEndings(expected);
 
         assertEquals(expected, generator.getWorldString(world));
     }
@@ -119,13 +122,13 @@ public class ASCIIWorldGeneratorTest {
 
         List<BookwormSpace> spaceList = new ArrayList<BookwormSpace>();
 
-        spaceList.add(new BookwormSpace(2,3));
+        spaceList.add(new BookwormSpace(2, 3));
 
-        BookwormSpace snakeSpace = new BookwormSpace(5,7);
+        BookwormSpace snakeSpace = new BookwormSpace(5, 7);
         snakeSpace.setState(SpaceState.SNAKE);
         spaceList.add(snakeSpace);
 
-        BookwormSpace foodSpace = new BookwormSpace(5,8);
+        BookwormSpace foodSpace = new BookwormSpace(5, 8);
         foodSpace.setState(SpaceState.FOOD);
         foodSpace.setCharacter('L');
         spaceList.add(foodSpace);
@@ -136,7 +139,7 @@ public class ASCIIWorldGeneratorTest {
         String expectedResult = "| |\u00B7|L|";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
-        assertEquals(expectedResult,filledInWorld);
+        assertEquals(expectedResult, filledInWorld);
     }
 
     @Test
@@ -146,7 +149,7 @@ public class ASCIIWorldGeneratorTest {
 
         List<BookwormSpace> spaceList = new ArrayList<BookwormSpace>();
 
-        BookwormSpace foodSpace = new BookwormSpace(5,8);
+        BookwormSpace foodSpace = new BookwormSpace(5, 8);
         foodSpace.setState(SpaceState.FOOD);
         foodSpace.setCharacter(' ');
         spaceList.add(foodSpace);
@@ -157,7 +160,11 @@ public class ASCIIWorldGeneratorTest {
         String expectedResult = "|\u00B7|";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
-        assertEquals(expectedResult,filledInWorld);
+        assertEquals(expectedResult, filledInWorld);
+    }
+
+    private String normaliseLineEndings(String str) {
+        return str.replaceAll("\r\n", "\n");
     }
 
 }
