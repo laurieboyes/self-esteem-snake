@@ -2,10 +2,10 @@ package uk.co.lrnk.self_esteem_snake.ui;
 
 import uk.co.lrnk.self_esteem_snake.Snake;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class SnakeKeyListener implements KeyListener {
+public class SnakeKeyListener extends KeyAdapter {
 
     Snake snake;
 
@@ -29,13 +29,5 @@ public class SnakeKeyListener implements KeyListener {
                 snake.tryToHeadLeft();
                 break;
         }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
     }
 }

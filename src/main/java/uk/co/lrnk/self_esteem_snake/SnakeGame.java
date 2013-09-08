@@ -1,17 +1,20 @@
 package uk.co.lrnk.self_esteem_snake;
 
+import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.Difficulty;
 import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
 public class SnakeGame {
 
-    World world;
-    Snake snake;
-    GameState state = GameState.PLAYING;
-    int stepTimeInMilliseconds = (int) (0.15 * 1000);
-    SnakeGameView view;
-    int previousHighScore;
-    ScoreSaver scoreSaver;
+    protected World world;
+    protected Snake snake;
+    private SnakeGameView view;
+    protected int previousHighScore;
+    protected ScoreSaver scoreSaver;
+    private Difficulty difficulty = Difficulty.NORMAL;
+    private int stepTimeInMilliseconds = (int) (0.15 * 1000);
+    private boolean interrupt = false;
 
     public void setView(SnakeGameView view) {
         this.view = view;
@@ -27,16 +30,30 @@ public class SnakeGame {
         snake.placeInWorld(world);
     }
 
+    public void applyConfig(Config config) {
+        difficulty = (Difficulty)config.getConfigChoice("difficulty");
+
+        switch (difficulty) {
+            case NORMAL:
+                stepTimeInMilliseconds = (int) (0.15 * 1000);
+                break;
+            case HARD:
+                stepTimeInMilliseconds = (int) (0.10 * 1000);
+                break;
+        }
+    }
+
     public void startGameAndPlayTillDeath() {
 
-        state = GameState.PLAYING;
         while (true) {
             try {
                 Thread.sleep(stepTimeInMilliseconds);
+                if(interrupt) {
+                    break;
+                }
                 step();
                 view.refreshView();
             } catch (GameOverException ex) {
-                state = GameState.GAME_OVER;
                 int currentScore = getScore();
                 if(previousHighScore < currentScore) {
                     scoreSaver.saveScore(currentScore);
@@ -64,15 +81,19 @@ public class SnakeGame {
         return snake;
     }
 
-    public GameState getState() {
-        return state;
-    }
-
     public int getScore(){
         return 7 * (snake.getLength() - snake.getStartingLength());
     }
 
     public int getPreviousHighScore() {
         return previousHighScore;
+    }
+
+    public void interrupt() {
+        interrupt = true;
+    }
+
+    public boolean wasInterrupted() {
+        return interrupt;
     }
 }
