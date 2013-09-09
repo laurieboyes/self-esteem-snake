@@ -1,4 +1,8 @@
-package uk.co.lrnk.self_esteem_snake;
+package uk.co.lrnk.self_esteem_snake.bookworm;
+
+import uk.co.lrnk.self_esteem_snake.Snake;
+import uk.co.lrnk.self_esteem_snake.Space;
+import uk.co.lrnk.self_esteem_snake.SpaceState;
 
 import java.util.LinkedList;
 
@@ -39,7 +43,7 @@ public class BookwormSnake extends Snake {
         }
     }
 
-    protected void eatSpace(Space space) {
+    public void eatSpace(Space space) {
         super.eatSpace(space);
 
         boolean containsSnakeSpacesWithoutLetters = false;

@@ -5,6 +5,8 @@ import com.google.common.io.Resources;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.lrnk.self_esteem_snake.*;
+import uk.co.lrnk.self_esteem_snake.bookworm.BookwormSpace;
+import uk.co.lrnk.self_esteem_snake.bookworm.BookwormWorld;
 
 import java.io.IOException;
 import java.util.ArrayList;

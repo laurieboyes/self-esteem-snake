@@ -1,4 +1,4 @@
-package uk.co.lrnk.self_esteem_snake;
+package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;

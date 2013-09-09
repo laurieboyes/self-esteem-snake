@@ -1,7 +1,7 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
-import uk.co.lrnk.self_esteem_snake.BookwormGame;
-import uk.co.lrnk.self_esteem_snake.BookwormWorld;
+import uk.co.lrnk.self_esteem_snake.bookworm.BookwormGame;
+import uk.co.lrnk.self_esteem_snake.bookworm.BookwormWorld;
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 import uk.co.lrnk.self_esteem_snake.config.*;
 

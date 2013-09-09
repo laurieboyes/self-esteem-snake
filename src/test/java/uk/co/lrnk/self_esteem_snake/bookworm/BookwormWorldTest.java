@@ -1,6 +1,9 @@
-package uk.co.lrnk.self_esteem_snake;
+package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import org.junit.Test;
+import uk.co.lrnk.self_esteem_snake.GameOverRanOutOfFoodException;
+import uk.co.lrnk.self_esteem_snake.RandomNumberGenerator;
+import uk.co.lrnk.self_esteem_snake.SpaceState;
 
 import java.util.List;
 

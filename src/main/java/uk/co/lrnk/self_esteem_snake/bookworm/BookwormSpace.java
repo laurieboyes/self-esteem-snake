@@ -1,4 +1,6 @@
-package uk.co.lrnk.self_esteem_snake;
+package uk.co.lrnk.self_esteem_snake.bookworm;
+
+import uk.co.lrnk.self_esteem_snake.Space;
 
 public class BookwormSpace extends Space {
 

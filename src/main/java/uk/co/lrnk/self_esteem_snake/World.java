@@ -9,7 +9,7 @@ public class World {
     protected Space[][] spaces;
     private int numRows;
     private int numColumns;
-    RandomNumberGenerator randomNumberGenerator;
+    protected RandomNumberGenerator randomNumberGenerator;
 
     public World(int numColumns, int numRows) {
 
