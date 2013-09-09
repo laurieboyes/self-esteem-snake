@@ -2,17 +2,25 @@ package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import uk.co.lrnk.self_esteem_snake.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookwormWorld extends World {
 
 //    temp
-    String foodText = "Hello, world!";
+    String foodString = "";
     int foodCharsEaten = 0;
 
     public BookwormWorld(int numColumns, int numRows) {
         super(numColumns, numRows);
+
+        try {
+            foodString = new FoodStringFetcher().getFoodString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     @Override
@@ -39,7 +47,7 @@ public class BookwormWorld extends World {
         foodSpace.setState(SpaceState.FOOD);
 
         try {
-            foodSpace.setCharacter(foodText.charAt(foodCharsEaten++));
+            foodSpace.setCharacter(foodString.charAt(foodCharsEaten++));
         } catch (StringIndexOutOfBoundsException e) {
             throw new GameOverRanOutOfFoodException();
         }
@@ -56,8 +64,8 @@ public class BookwormWorld extends World {
         return spaceList;
     }
 
-    public void setFoodText(String foodText) {
-        this.foodText = foodText;
+    public void setFoodString(String foodString) {
+        this.foodString = foodString;
     }
 
 }

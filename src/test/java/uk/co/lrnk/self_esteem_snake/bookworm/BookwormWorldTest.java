@@ -19,7 +19,7 @@ public class BookwormWorldTest {
     public void testFoodInWorldString() {
         BookwormWorld world = new BookwormWorld(10,10);
 
-        world.setFoodText("Some test food");
+        world.setFoodString("Some test food");
 
         RandomNumberGenerator mockRandom = mock(RandomNumberGenerator.class);
         world.setRandomNumberGenerator(mockRandom);
@@ -77,7 +77,7 @@ public class BookwormWorldTest {
     public void exceptionWhenStringFinished() {
         BookwormWorld world = new BookwormWorld(10,10);
 
-        world.setFoodText("123");
+        world.setFoodString("123");
 
         RandomNumberGenerator mockRandom = mock(RandomNumberGenerator.class);
         world.setRandomNumberGenerator(mockRandom);
