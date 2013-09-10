@@ -19,6 +19,8 @@ public class GamePanel extends JPanel implements SnakeGameView {
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
 
+    Font font = new Font("Lucida Sans Typewriter", Font.PLAIN, 11);
+
     Color activeColor = Color.GREEN;
     Color inactiveColor = Color.GRAY;
     Color backColor = Color.BLACK;
@@ -82,6 +84,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try {
+            g.setFont(font);
             doPaint((Graphics2D) g);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,10 +114,11 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         int leftOffset = 10;
-        int topOffset = 180;
+        int topOffset = 160;
         int lineHeight = g.getFontMetrics().getHeight();
 
-        g.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        g = (Graphics2D) g.create();
+        g.setFont(font.deriveFont(13f));
         g.setColor(activeColor);
 
         Graphics2D gTitle = (Graphics2D) g.create();
@@ -159,7 +163,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
             if (choiceNumber != configItem.getChoices().size()) {
                 g.setColor(inactiveColor);
-                leftOffset += g.getFontMetrics().getWidths()[0] * (choiceLabelText.length() + 2);
+                leftOffset += g.getFontMetrics().getWidths()[0] * (choiceLabelText.length() + 1);
                 g.drawString("/", leftOffset, topOffset);
                 leftOffset += g.getFontMetrics().getWidths()[0] * 2;
             }
@@ -179,8 +183,6 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setColor(backColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        Font font = new Font("Monospaced", Font.PLAIN, 11);
-        g.setFont(font);
         g.setColor(activeColor);
 
         String loadingMessage = "LOADING";
@@ -210,8 +212,6 @@ public class GamePanel extends JPanel implements SnakeGameView {
         g.setColor(backColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        Font font = new Font("Monospaced", Font.PLAIN, 11);
-        g.setFont(font);
         g.setColor(activeColor);
 
         if (game.getPreviousHighScore() < game.getScore()) {
@@ -261,7 +261,6 @@ public class GamePanel extends JPanel implements SnakeGameView {
         int leftOffset = 10;
         int topOffset = 0;
 
-        g.setFont(new Font("Monospaced", Font.PLAIN, 11));
         g.setColor(activeColor);
 
         for (String line : worldString.split("\n")) {
