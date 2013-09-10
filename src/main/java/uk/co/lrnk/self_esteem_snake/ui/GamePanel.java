@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
                     game = new SnakeGame();
                     break;
                 case BOOKWORM:
-                    game = new BookwormGame();
+                    game = new BookwormGame(font);
                     break;
             }
 

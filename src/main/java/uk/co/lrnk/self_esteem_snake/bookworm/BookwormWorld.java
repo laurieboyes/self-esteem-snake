@@ -2,6 +2,7 @@ package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import uk.co.lrnk.self_esteem_snake.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +12,13 @@ public class BookwormWorld extends World {
     String foodString = "";
     int foodCharsEaten = 0;
 
-    public BookwormWorld(int numColumns, int numRows) {
+    public BookwormWorld(int numColumns, int numRows, Font font) {
         super(numColumns, numRows);
 
         try {
-            foodString = new FoodStringFetcher().getFoodString();
+            FoodStringFetcher fetcher = new FoodStringFetcher();
+            fetcher.setViewFont(font);
+            foodString = fetcher.getFoodString();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

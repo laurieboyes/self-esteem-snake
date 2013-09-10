@@ -13,7 +13,7 @@ public class BookwormSnakeTest {
 
     @Test
     public void testEatBookwormSpace() {
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         BookwormSnake snake = new BookwormSnake();
         snake.placeInWorld(world);
@@ -27,7 +27,7 @@ public class BookwormSnakeTest {
 
     @Test
     public void testEatenCharactersStayAtSamePositionRelativeToSnakeHead() {
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         BookwormSnake snake = new BookwormSnake();
         snake.placeInWorld(world);
@@ -51,7 +51,7 @@ public class BookwormSnakeTest {
 
     @Test
     public void testNoNullPointerWhenShiftSnakeWithNoNonCharacterSpaces() {
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         BookwormSnake snake = new BookwormSnake();
         snake.placeInWorld(world);
@@ -67,7 +67,7 @@ public class BookwormSnakeTest {
     @Test
     public void charactersArePushedDownSnakeWhenNewCharacterEaten() {
 
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         BookwormSnake snake = new BookwormSnake();
         snake.placeInWorld(world);
@@ -92,7 +92,7 @@ public class BookwormSnakeTest {
     @Test
     public void snakeLengthStaysConstantUntilAllInitialDotsReplaced() {
 
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         BookwormSnake snake = new BookwormSnake();
         snake.placeInWorld(world);

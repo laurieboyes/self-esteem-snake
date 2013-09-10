@@ -9,9 +9,9 @@ public class BookwormGameTest {
 
     @Test
     public void scoreIsCalculatedAs7TimesCharacterEatenSnakeEmpty() {
-        BookwormGame game = new BookwormGame();
+        BookwormGame game = new BookwormGame(null);
         BookwormSnake snake = new BookwormSnake();
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
         snake.placeInWorld(world);
         ReflectionTestUtils.setField(game, "snake", snake);
 
@@ -20,9 +20,9 @@ public class BookwormGameTest {
 
     @Test
     public void scoreIsCalculatedAs7TimesCharacterEatenSnakePartFull() {
-        BookwormGame game = new BookwormGame();
+        BookwormGame game = new BookwormGame(null);
         BookwormSnake snake = new BookwormSnake();
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
         snake.placeInWorld(world);
         ReflectionTestUtils.setField(game, "snake", snake);
 

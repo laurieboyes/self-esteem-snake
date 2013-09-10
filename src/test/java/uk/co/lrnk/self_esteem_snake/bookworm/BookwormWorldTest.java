@@ -17,7 +17,7 @@ public class BookwormWorldTest {
 
     @Test
     public void testFoodInWorldString() {
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         world.setFoodString("Some test food");
 
@@ -63,7 +63,7 @@ public class BookwormWorldTest {
 
     @Test
     public void testGetAllBookwormSpaces() {
-        BookwormWorld world = new BookwormWorld(8,3);
+        BookwormWorld world = new BookwormWorld(8,3,null);
         int w = 8;
         int h = 3;
         int totalSpaces = w * h;
@@ -75,7 +75,7 @@ public class BookwormWorldTest {
 
     @Test
     public void exceptionWhenStringFinished() {
-        BookwormWorld world = new BookwormWorld(10,10);
+        BookwormWorld world = new BookwormWorld(10,10,null);
 
         world.setFoodString("123");
 
