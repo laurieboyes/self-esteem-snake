@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
             }
 
             gameState = GameState.LOADING;
+            refreshView();
 
             switch ((GameType) config.getConfigChoice("gameType")) {
                 case SELF_ESTEEM_SNAKE:
@@ -94,8 +95,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
                 drawStartMenu(g);
                 break;
             case LOADING:
-                g.setColor(backColor);
-                g.fillRect(0, 0, getWidth(), getHeight());
+                drawLoadingScreen(g);
                 break;
             case PLAYING:
                 drawPlaying(g);
@@ -173,6 +173,22 @@ public class GamePanel extends JPanel implements SnakeGameView {
             g.setColor(inactiveColor);
         }
         g.drawString(labelText + ": ", leftOffset, topOffset);
+    }
+
+    private void drawLoadingScreen(Graphics2D g) {
+        g.setColor(backColor);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        Font font = new Font("Monospaced", Font.PLAIN, 11);
+        g.setFont(font);
+        g.setColor(activeColor);
+
+        String loadingMessage = "LOADING";
+
+        int drawAtX = getCenteredStringX(g, font, loadingMessage);
+        int drawAtY = getCenteredStringY(g, font, loadingMessage);
+
+        g.drawString(loadingMessage, drawAtX, drawAtY);
     }
 
     private void drawPlaying(Graphics2D g) {
