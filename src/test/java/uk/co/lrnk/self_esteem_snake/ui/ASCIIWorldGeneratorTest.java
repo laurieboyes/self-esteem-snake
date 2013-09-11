@@ -138,7 +138,7 @@ public class ASCIIWorldGeneratorTest {
         when(world.getAllBookwormSpaces()).thenReturn(spaceList);
 
         String placeHolderString = "|2-3|5-7|5-8|";
-        String expectedResult = "| |\u00B7|L|";
+        String expectedResult = "| |\u2022|L|";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
         assertEquals(expectedResult, filledInWorld);
@@ -159,7 +159,7 @@ public class ASCIIWorldGeneratorTest {
         when(world.getAllBookwormSpaces()).thenReturn(spaceList);
 
         String placeHolderString = "|5-8|";
-        String expectedResult = "|\u00B7|";
+        String expectedResult = "|\u2022|";
         String filledInWorld = ReflectionTestUtils.invokeMethod(generator, "fillInWorld", placeHolderString, world);
 
         assertEquals(expectedResult, filledInWorld);

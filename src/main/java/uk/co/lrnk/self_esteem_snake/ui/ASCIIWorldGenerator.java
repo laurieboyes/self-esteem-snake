@@ -53,6 +53,7 @@ public class ASCIIWorldGenerator {
 
     private String fillInWorld(String placeholderWorld, BookwormWorld world) {
 
+        char whitespaceChar = '\u2022';
         String resultingWorld = placeholderWorld;
         for (BookwormSpace space : world.getAllBookwormSpaces()) {
 
@@ -64,13 +65,13 @@ public class ASCIIWorldGenerator {
                     break;
                 case SNAKE:
                     if(space.hasCharacter()) {
-                        stateChar = (space.getCharacter() == ' ') ? '\u00B7' : space.getCharacter();
+                        stateChar = (space.getCharacter() == ' ') ? whitespaceChar : space.getCharacter();
                     } else {
-                        stateChar = '\u00B7';
+                        stateChar = whitespaceChar;
                     }
                     break;
                 case FOOD:
-                    stateChar = (space.getCharacter() == ' ') ? '\u00B7' : space.getCharacter();
+                    stateChar = (space.getCharacter() == ' ') ? whitespaceChar : space.getCharacter();
                     break;
                 default:
                     throw new RuntimeException("ASCIIWorldGenerator.fillInWorld(String, BookwormWorld): Attempted to draw space with unimplemented state");
