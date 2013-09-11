@@ -8,7 +8,7 @@ import java.io.IOException;
 public class RandomWikipediaDocumentGetter {
 
     public Document getDocument() throws IOException {
-        return Jsoup.connect("http://en.wikipedia.org/wiki/Special:Random").get();
+        return Jsoup.connect("http://en.wikipedia.org/wiki/Special:Random").timeout(5 * 1000).get();
     }
 
 }

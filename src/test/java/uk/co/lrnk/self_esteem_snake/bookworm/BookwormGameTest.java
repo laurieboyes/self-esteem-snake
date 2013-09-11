@@ -11,7 +11,7 @@ public class BookwormGameTest {
     public void scoreIsCalculatedAs7TimesCharacterEatenSnakeEmpty() {
         BookwormGame game = new BookwormGame(null);
         BookwormSnake snake = new BookwormSnake();
-        BookwormWorld world = new BookwormWorld(10,10,null);
+        BookwormWorld world = new BookwormWorld(10,10);
         snake.placeInWorld(world);
         ReflectionTestUtils.setField(game, "snake", snake);
 
@@ -22,7 +22,7 @@ public class BookwormGameTest {
     public void scoreIsCalculatedAs7TimesCharacterEatenSnakePartFull() {
         BookwormGame game = new BookwormGame(null);
         BookwormSnake snake = new BookwormSnake();
-        BookwormWorld world = new BookwormWorld(10,10,null);
+        BookwormWorld world = new BookwormWorld(10,10);
         snake.placeInWorld(world);
         ReflectionTestUtils.setField(game, "snake", snake);
 

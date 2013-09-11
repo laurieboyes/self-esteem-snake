@@ -2,27 +2,20 @@ package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import uk.co.lrnk.self_esteem_snake.*;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookwormWorld extends World {
 
-    String foodString = "";
+    private String foodString = "";
     int foodCharsEaten = 0;
 
-    public BookwormWorld(int numColumns, int numRows, Font font) {
+    public BookwormWorld(int numColumns, int numRows) {
         super(numColumns, numRows);
+    }
 
-        try {
-            FoodStringFetcher fetcher = new FoodStringFetcher();
-            fetcher.setViewFont(font);
-            foodString = fetcher.getFoodString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+    public void setFoodString(String foodString) {
+        this.foodString = foodString;
     }
 
     @Override
@@ -41,7 +34,7 @@ public class BookwormWorld extends World {
     public void placeFoodInWorld() {
 
         List<Space> emptySpaces = getEmptySpaces();
-        if(emptySpaces.isEmpty()) {
+        if (emptySpaces.isEmpty()) {
             throw new WorldFullException();
         }
 
@@ -59,15 +52,11 @@ public class BookwormWorld extends World {
         List<BookwormSpace> spaceList = new ArrayList<BookwormSpace>();
 
         for (Space[] row : spaces) {
-            for(Space space : row) {
+            for (Space space : row) {
                 spaceList.add((BookwormSpace) space);
             }
         }
         return spaceList;
-    }
-
-    public void setFoodString(String foodString) {
-        this.foodString = foodString;
     }
 
 }

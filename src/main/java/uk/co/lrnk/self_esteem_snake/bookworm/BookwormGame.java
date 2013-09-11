@@ -8,10 +8,11 @@ import java.awt.*;
 
 public class BookwormGame extends SnakeGame {
 
-    private Font viewFont;
+    FoodStringFetcher fetcher = new FoodStringFetcher();
 
     public BookwormGame(Font viewFont) {
-        this.viewFont = viewFont;
+        fetcher = new FoodStringFetcher();
+        fetcher.setViewFont(viewFont);
     }
 
     @Override
@@ -19,7 +20,8 @@ public class BookwormGame extends SnakeGame {
         scoreSaver = new ScoreSaver();
         previousHighScore = scoreSaver.getSavedScore();
 
-        world = new BookwormWorld(20, 12, viewFont);
+        world = new BookwormWorld(20, 12);
+        ((BookwormWorld)world).setFoodString(fetcher.getFoodString());
         snake = new BookwormSnake();
         snake.placeInWorld(world);
     }
