@@ -34,6 +34,16 @@ public class FoodStringFetcherTest {
 
     }
 
+    @Test
+    public void testRemoveStatementsInBrackets() throws IOException {
+
+        FoodStringFetcher fetcher = getFetcherToWithMockDocument("testArticleWithParentheticalStatementsHTML.txt");
+        String expectedResult = getStringFromResourceFile("testArticleWithParentheticalStatementsText.txt");
+
+        assertEquals(expectedResult, fetcher.getFoodString());
+
+    }
+
     private FoodStringFetcher getFetcherToWithMockDocument(String fileName) throws IOException {
         FoodStringFetcher fetcher = new FoodStringFetcher();
 

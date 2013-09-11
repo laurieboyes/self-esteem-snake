@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+</head>
+<body>
+<div id="mw-content-text">
+<p><b>Sylvia Beach</b> (March 14, 1887 – October 5, 1962), born <b>Nancy Woodbridge Beach</b>, was(bracket statement without preceding space) a <a href="/wiki/United_States" title="United States">American</a>-born bookseller and publisher who lived most of her life in <a href="/wiki/Paris" title="Paris">Paris</a>, where she was one (bracket without trailing space)of the leading <a href="/wiki/Expatriate" title="Expatriate">expatriate</a> figures between <a href="/wiki/World_War_I" title="World War I">World War I</a> and <a href="/wiki/World_War_II" title="World War II">II</a>.<sup id="cite_ref-FOOTNOTEGarner2010_1-0" class="reference"><a href="#cite_note-FOOTNOTEGarner2010-1"><span>[</span>1<span>]</span></a></sup></p>
+</div>
+</body>
+</html>
