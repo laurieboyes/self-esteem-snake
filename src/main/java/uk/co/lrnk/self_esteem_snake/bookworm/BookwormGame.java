@@ -28,6 +28,10 @@ public class BookwormGame extends SnakeGame {
 
     @Override
     public int getScore() {
+        return 7 * getNumberOfCharacterEaten();
+    }
+
+    public int getNumberOfCharacterEaten() {
         int numLettersInSnake = 0;
         for(Space space : snake.getSnakeSpaces()) {
             if(((BookwormSpace)space).hasCharacter()) {
@@ -35,6 +39,15 @@ public class BookwormGame extends SnakeGame {
             }
         }
 
-        return 7 * numLettersInSnake;
+        return numLettersInSnake;
+    }
+
+    public String getFoodStringEntire() {
+        return ((BookwormWorld) world).getFoodString();
+    }
+
+    public String getFoodStringEaten() {
+        String foodString = ((BookwormWorld) world).getFoodString();
+        return foodString.substring(0, getNumberOfCharacterEaten());
     }
 }

@@ -18,6 +18,10 @@ public class BookwormWorld extends World {
         this.foodString = foodString;
     }
 
+    public String getFoodString() {
+        return foodString;
+    }
+
     @Override
     protected void initBoard(int xLength, int yLength) {
 
