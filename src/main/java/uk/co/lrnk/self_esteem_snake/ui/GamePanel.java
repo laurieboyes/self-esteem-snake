@@ -1,9 +1,13 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
+import org.apache.commons.lang.WordUtils;
+import uk.co.lrnk.self_esteem_snake.SnakeGame;
 import uk.co.lrnk.self_esteem_snake.bookworm.BookwormGame;
 import uk.co.lrnk.self_esteem_snake.bookworm.BookwormWorld;
-import uk.co.lrnk.self_esteem_snake.SnakeGame;
-import uk.co.lrnk.self_esteem_snake.config.*;
+import uk.co.lrnk.self_esteem_snake.config.Config;
+import uk.co.lrnk.self_esteem_snake.config.ConfigItem;
+import uk.co.lrnk.self_esteem_snake.config.ConfigItemChoice;
+import uk.co.lrnk.self_esteem_snake.config.GameType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -214,6 +218,17 @@ public class GamePanel extends JPanel implements SnakeGameView {
 
         g.setColor(activeColor);
 
+        switch ((GameType) config.getConfigChoice("gameType")) {
+            case SELF_ESTEEM_SNAKE:
+                drawGameOverSnake(g);
+                break;
+            case BOOKWORM:
+                drawGameOverBookworm(g);
+                break;
+        }
+    }
+
+    private void drawGameOverSnake(Graphics2D g) {
         if (game.getPreviousHighScore() < game.getScore()) {
 
             String gameOverMessage = "NEW HIGH SCORE: " + game.getScore();
@@ -233,6 +248,30 @@ public class GamePanel extends JPanel implements SnakeGameView {
             int gameOverY = getCenteredStringY(g, font, gameOverMessage);
             g.drawString(gameOverMessage, gameOverX, gameOverY);
 
+        }
+    }
+
+    private void drawGameOverBookworm(Graphics2D g) {
+
+        if(((BookwormGame)game).getNumberOfCharacterEaten() > 0) {
+
+            String foodEatenString = ((BookwormGame)game).getFoodStringEaten();
+
+            String[] lines = WordUtils.wrap(foodEatenString, 38).split("\n");
+
+            for (int i = 0; i < lines.length; i++) {
+                int x = getCenteredStringX(g, font, lines[i]);
+                int y = getStringInLineListY(g, font, i, lines.length);
+                g.drawString(lines[i], x, y);
+            }
+
+        } else {
+
+            String nothingEatenString = "Your bookworm died hungry";
+
+            int x = getCenteredStringX(g, font, nothingEatenString);
+            int y = getCenteredStringY(g, font, nothingEatenString);
+            g.drawString(nothingEatenString, x, y);
         }
 
     }
@@ -255,6 +294,19 @@ public class GamePanel extends JPanel implements SnakeGameView {
         int panelHeight = this.getHeight();
 
         return (panelHeight - textHeight) / 2 + fm.getAscent();
+    }
+
+    private int getStringInLineListY(Graphics2D g, Font f, int lineNumber, int numLines) {
+        FontMetrics fm = g.getFontMetrics(f);
+
+        int lineHeight = (int) (fm.getHeight() * 1.2);
+        int allLinesHeight = lineHeight * numLines;
+
+        int panelHeight = this.getHeight();
+
+        int allLinesY = (panelHeight - allLinesHeight) / 2 + fm.getAscent();
+
+        return allLinesY + (lineHeight * lineNumber);
     }
 
     private void drawWorldString(Graphics2D g, String worldString) {
