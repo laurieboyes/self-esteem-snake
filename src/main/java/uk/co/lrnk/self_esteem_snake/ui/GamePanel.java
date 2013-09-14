@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements SnakeGameView {
     StartMenu startMenu;
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
+    GameKeyListener gameKeyListener;
 
     Font font = new Font("Lucida Sans Typewriter", Font.PLAIN, 11);
 
@@ -109,6 +110,9 @@ public class GamePanel extends JPanel implements SnakeGameView {
                 break;
             case GAME_OVER:
                 drawGameOver(g);
+                break;
+            case PAUSED:
+                drawPausedScreen(g);
                 break;
         }
     }
@@ -280,8 +284,22 @@ public class GamePanel extends JPanel implements SnakeGameView {
             int y = getCenteredStringY(g, font, nothingEatenString);
             g.drawString(nothingEatenString, x, y);
         }
+    }
+
+    private void drawPausedScreen(Graphics2D g) {
+        g.setColor(backColor);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        String pausedText = "PAUSED";
+
+        int x = getCenteredStringX(g, font, pausedText);
+        int y = getCenteredStringY(g, font, pausedText);
+
+        g.setColor(activeColor);
+        g.drawString(pausedText, x, y);
 
     }
+
 
     private int getCenteredStringX(Graphics2D g, Font f, String string) {
         FontMetrics fm = g.getFontMetrics(f);
@@ -337,5 +355,23 @@ public class GamePanel extends JPanel implements SnakeGameView {
         gameState = GameState.START_MENU;
         addKeyListener(startMenu);
         refreshView();
+    }
+
+    public void togglePauseGame() {
+        switch (gameState) {
+            case PAUSED:
+                game.resume();
+                gameState = GameState.PLAYING;
+                addKeyListener(snakeKeyListener);
+                refreshView();
+                break;
+            case PLAYING:
+                game.pause();
+                gameState = GameState.PAUSED;
+                removeKeyListener(snakeKeyListener);
+                refreshView();
+                break;
+
+        }
     }
 }

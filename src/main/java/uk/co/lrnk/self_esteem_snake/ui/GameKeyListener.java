@@ -20,6 +20,9 @@ public class GameKeyListener extends KeyAdapter {
                     panel.gameState = GameState.READY_TO_START_GAME;
                 }
                 break;
+            case KeyEvent.VK_P:
+                panel.togglePauseGame();
+                break;
             case KeyEvent.VK_ESCAPE:
                 panel.returnToStartMenu();
         }

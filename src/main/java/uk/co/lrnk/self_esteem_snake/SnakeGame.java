@@ -15,6 +15,7 @@ public class SnakeGame {
     private Difficulty difficulty = Difficulty.NORMAL;
     private int stepTimeInMilliseconds = (int) (0.15 * 1000);
     private boolean interrupt = false;
+    private boolean paused = false;
 
     public void setView(SnakeGameView view) {
         this.view = view;
@@ -47,12 +48,16 @@ public class SnakeGame {
 
         while (true) {
             try {
-                Thread.sleep(stepTimeInMilliseconds);
                 if(interrupt) {
                     break;
                 }
+                if(paused) {
+                    Thread.sleep(10);
+                    continue;
+                }
                 step();
                 view.refreshView();
+                Thread.sleep(stepTimeInMilliseconds);
             } catch (GameOverException ex) {
                 int currentScore = getScore();
                 if(previousHighScore < currentScore) {
@@ -96,4 +101,13 @@ public class SnakeGame {
     public boolean wasInterrupted() {
         return interrupt;
     }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
 }

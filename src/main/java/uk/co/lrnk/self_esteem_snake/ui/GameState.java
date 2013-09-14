@@ -5,5 +5,6 @@ public enum GameState {
     LOADING,
     PLAYING,
     GAME_OVER,
-    READY_TO_START_GAME
+    READY_TO_START_GAME,
+    PAUSED
 }
