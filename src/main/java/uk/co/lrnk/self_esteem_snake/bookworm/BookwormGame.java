@@ -2,7 +2,7 @@ package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 import uk.co.lrnk.self_esteem_snake.Space;
-import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
+import uk.co.lrnk.self_esteem_snake.ScoreSaver;
 
 import java.awt.*;
 import java.io.IOException;
@@ -63,5 +63,10 @@ public class BookwormGame extends SnakeGame {
 
     public boolean foodStringIsErrorMessage() {
         return foodStringIsErrorMessage;
+    }
+
+    @Override
+    protected void saveScore(int score) {
+//        do nothing
     }
 }

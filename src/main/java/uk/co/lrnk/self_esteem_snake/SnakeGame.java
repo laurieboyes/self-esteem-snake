@@ -2,7 +2,6 @@ package uk.co.lrnk.self_esteem_snake;
 
 import uk.co.lrnk.self_esteem_snake.config.Config;
 import uk.co.lrnk.self_esteem_snake.config.Difficulty;
-import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
 public class SnakeGame {
@@ -61,7 +60,7 @@ public class SnakeGame {
             } catch (GameOverException ex) {
                 int currentScore = getScore();
                 if(previousHighScore < currentScore) {
-                    scoreSaver.saveScore(currentScore);
+                    saveScore(currentScore);
                 }
                 view.refreshView();
                 break;
@@ -87,7 +86,16 @@ public class SnakeGame {
     }
 
     public int getScore(){
-        return 7 * (snake.getLength() - snake.getStartingLength());
+        int multiplier = 0;
+        switch (difficulty) {
+            case NORMAL:
+                multiplier = 3;
+                break;
+            case HARD:
+                multiplier = 7;
+                break;
+        }
+        return multiplier * (snake.getLength() - snake.getStartingLength());
     }
 
     public int getPreviousHighScore() {
@@ -108,6 +116,10 @@ public class SnakeGame {
 
     public void resume() {
         paused = false;
+    }
+
+    protected void saveScore(int score) {
+        scoreSaver.saveScore(score);
     }
 
 }

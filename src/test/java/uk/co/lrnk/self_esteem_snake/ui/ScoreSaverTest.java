@@ -3,6 +3,7 @@ package uk.co.lrnk.self_esteem_snake.ui;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.co.lrnk.self_esteem_snake.ScoreSaver;
 
 import java.io.*;
 

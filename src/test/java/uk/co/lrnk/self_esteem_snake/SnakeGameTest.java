@@ -5,7 +5,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.lrnk.self_esteem_snake.config.Config;
 import uk.co.lrnk.self_esteem_snake.config.ConfigItemChoice;
 import uk.co.lrnk.self_esteem_snake.config.Difficulty;
-import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.ui.SnakeGameView;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,8 +13,21 @@ import static org.mockito.Mockito.*;
 public class SnakeGameTest {
 
     @Test
-    public void scoreIsCalculatedAs7TimesAddedLength() {
+    public void onNormalDifficultyScoreIsCalculatedAs7TimesAddedLength() {
         SnakeGame game = new SnakeGame();
+        ReflectionTestUtils.setField(game, "difficulty", Difficulty.NORMAL);
+        Snake mockSnake = mock(Snake.class);
+        ReflectionTestUtils.setField(game, "snake", mockSnake);
+
+        when(mockSnake.getStartingLength()).thenReturn(6);
+        when(mockSnake.getLength()).thenReturn(10);
+        assertEquals(12, game.getScore());
+    }
+
+    @Test
+    public void onHardDifficultyScoreIsCalculatedAs7TimesAddedLength() {
+        SnakeGame game = new SnakeGame();
+        ReflectionTestUtils.setField(game, "difficulty", Difficulty.HARD);
         Snake mockSnake = mock(Snake.class);
         ReflectionTestUtils.setField(game, "snake", mockSnake);
 
@@ -27,6 +39,7 @@ public class SnakeGameTest {
     @Test
     public void newHighScoresAreSaved() {
         SnakeGame game = new SnakeGame();
+        ReflectionTestUtils.setField(game, "difficulty", Difficulty.HARD);
         Snake mockSnake = mock(Snake.class);
         ReflectionTestUtils.setField(game, "snake", mockSnake);
         SnakeGameView mockView = mock(SnakeGameView.class);
@@ -54,6 +67,7 @@ public class SnakeGameTest {
     @Test
     public void nonHighScoresAreNotSaved() {
         SnakeGame game = new SnakeGame();
+        ReflectionTestUtils.setField(game, "difficulty", Difficulty.HARD);
         Snake mockSnake = mock(Snake.class);
         ReflectionTestUtils.setField(game, "snake", mockSnake);
         SnakeGameView mockView = mock(SnakeGameView.class);

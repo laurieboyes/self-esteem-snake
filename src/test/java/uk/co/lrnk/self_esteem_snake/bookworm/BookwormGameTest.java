@@ -2,6 +2,7 @@ package uk.co.lrnk.self_esteem_snake.bookworm;
 
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.co.lrnk.self_esteem_snake.ScoreSaver;
 import uk.co.lrnk.self_esteem_snake.Space;
 
 import java.io.IOException;
@@ -9,10 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 public class BookwormGameTest {
+
+    @Test
+    public void bookwormGameDoesNotSaveScore(){
+        ScoreSaver mockScoreSaver = mock(ScoreSaver.class);
+        BookwormGame game = new BookwormGame(null);
+
+        ReflectionTestUtils.setField(game, "scoreSaver", mockScoreSaver);
+
+        ReflectionTestUtils.invokeMethod(game, "saveScore", 0);
+
+        verify(mockScoreSaver, never()).saveScore(anyInt());
+
+    }
 
     @Test
     public void scoreIsCalculatedAs7TimesCharacterEatenSnakeEmpty() {
