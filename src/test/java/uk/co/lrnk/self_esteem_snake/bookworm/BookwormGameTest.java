@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.lrnk.self_esteem_snake.Space;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class BookwormGameTest {
     }
 
     @Test
-    public void testGetFoodStringFull(){
+    public void testGetFoodStringFull() throws IOException {
         BookwormGame game = new BookwormGame(null);
         String foodString = "test food string";
 
@@ -52,7 +53,7 @@ public class BookwormGameTest {
     }
 
     @Test
-    public void testGetFoodStringEaten(){
+    public void testGetFoodStringEaten() throws IOException {
         String foodString = "12345678";
         int charsEaten = 4;
         String foodEatenString = "1234";
@@ -62,7 +63,7 @@ public class BookwormGameTest {
 
 
     @Test
-    public void testGetFoodStringEatenNoCharsEaten(){
+    public void testGetFoodStringEatenNoCharsEaten() throws IOException {
         String foodString = "12345678";
         int charsEaten = 0;
         String foodEatenString = "";
@@ -70,7 +71,7 @@ public class BookwormGameTest {
         assertEquals(foodEatenString, getMockGame(foodString, charsEaten).getFoodStringEaten());
     }
 
-    private BookwormGame getMockGame(String foodString, int charsEaten) {
+    private BookwormGame getMockGame(String foodString, int charsEaten) throws IOException {
 
         BookwormGame game = new BookwormGame(null);
 

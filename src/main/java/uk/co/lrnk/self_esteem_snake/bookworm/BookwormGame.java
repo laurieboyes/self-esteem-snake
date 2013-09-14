@@ -5,10 +5,12 @@ import uk.co.lrnk.self_esteem_snake.Space;
 import uk.co.lrnk.self_esteem_snake.ui.ScoreSaver;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class BookwormGame extends SnakeGame {
 
     FoodStringFetcher fetcher = new FoodStringFetcher();
+    boolean foodStringIsErrorMessage;
 
     public BookwormGame(Font viewFont) {
         fetcher = new FoodStringFetcher();
@@ -21,7 +23,15 @@ public class BookwormGame extends SnakeGame {
         previousHighScore = scoreSaver.getSavedScore();
 
         world = new BookwormWorld(20, 12);
-        ((BookwormWorld)world).setFoodString(fetcher.getFoodString());
+
+        try {
+            ((BookwormWorld)world).setFoodString(fetcher.getFoodString());
+        } catch (IOException e) {
+            ((BookwormWorld)world).setFoodString("Couldn't get hold of a Wikipedia article. It's most likely you're not connected to the internet. Sorry!");
+            foodStringIsErrorMessage = true;
+        }
+
+
         snake = new BookwormSnake();
         snake.placeInWorld(world);
     }
@@ -49,5 +59,9 @@ public class BookwormGame extends SnakeGame {
     public String getFoodStringEaten() {
         String foodString = ((BookwormWorld) world).getFoodString();
         return foodString.substring(0, getNumberOfCharacterEaten());
+    }
+
+    public boolean foodStringIsErrorMessage() {
+        return foodStringIsErrorMessage;
     }
 }

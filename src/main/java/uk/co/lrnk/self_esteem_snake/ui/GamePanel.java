@@ -252,12 +252,19 @@ public class GamePanel extends JPanel implements SnakeGameView {
     }
 
     private void drawGameOverBookworm(Graphics2D g) {
+        BookwormGame bookwormGame = (BookwormGame)game;
 
-        if(((BookwormGame)game).getNumberOfCharacterEaten() > 0) {
+        if(bookwormGame.getNumberOfCharacterEaten() > 0) {
 
-            String foodEatenString = ((BookwormGame)game).getFoodStringEaten();
+            String foodString;
 
-            String[] lines = WordUtils.wrap(foodEatenString, 38).split("\n");
+            if(!bookwormGame.foodStringIsErrorMessage()) {
+                foodString = bookwormGame.getFoodStringEaten();
+            } else {
+                foodString = bookwormGame.getFoodStringEntire();
+            }
+
+            String[] lines = WordUtils.wrap(foodString, 38).split("\r\n");
 
             for (int i = 0; i < lines.length; i++) {
                 int x = getCenteredStringX(g, font, lines[i]);

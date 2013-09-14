@@ -18,24 +18,19 @@ public class FoodStringFetcher {
         this.viewFont = viewFont;
     }
 
-    public String getFoodString() {
+    public String getFoodString() throws IOException {
         String foodString;
-        try{
-            foodString = documentGetter.getDocument().getElementById("mw-content-text").select("p:not([class])").text().trim();
+        foodString = documentGetter.getDocument().getElementById("mw-content-text").select("p:not([class])").text().trim();
 
-            if (viewFont != null) {
-                String sanitisedArticle = sanitiseStringForFont(foodString, viewFont);
-                sanitisedArticle = removeStatementsInRoundBrackets(sanitisedArticle);
-                sanitisedArticle = removeStatementsInSquareBrackets(sanitisedArticle);
-                sanitisedArticle = removeMultipleSpaces(sanitisedArticle);
-                sanitisedArticle = removeErroneousSpacesBeforePunctuation(sanitisedArticle);
-                return sanitisedArticle;
-            } else {
-                return foodString;
-            }
-
-        } catch (IOException e) {
-            return "Couldn't get hold of a Wikipedia article. It's most likely you're not connected to the internet. Sorry!";
+        if (viewFont != null) {
+            String sanitisedArticle = sanitiseStringForFont(foodString, viewFont);
+            sanitisedArticle = removeStatementsInRoundBrackets(sanitisedArticle);
+            sanitisedArticle = removeStatementsInSquareBrackets(sanitisedArticle);
+            sanitisedArticle = removeMultipleSpaces(sanitisedArticle);
+            sanitisedArticle = removeErroneousSpacesBeforePunctuation(sanitisedArticle);
+            return sanitisedArticle;
+        } else {
+            return foodString;
         }
     }
 
