@@ -1,6 +1,8 @@
 package uk.co.lrnk.self_esteem_snake.ui;
 
+import com.google.common.io.Resources;
 import org.apache.commons.lang.WordUtils;
+import uk.co.lrnk.self_esteem_snake.GameInitException;
 import uk.co.lrnk.self_esteem_snake.SnakeGame;
 import uk.co.lrnk.self_esteem_snake.bookworm.BookwormGame;
 import uk.co.lrnk.self_esteem_snake.bookworm.BookwormWorld;
@@ -22,9 +24,8 @@ public class GamePanel extends JPanel implements SnakeGameView {
     StartMenu startMenu;
     ASCIIWorldGenerator generator;
     SnakeKeyListener snakeKeyListener;
-    GameKeyListener gameKeyListener;
 
-    Font font = new Font("Lucida Sans Typewriter", Font.PLAIN, 11);
+    Font font;
 
     Color activeColor = Color.GREEN;
     Color inactiveColor = Color.GRAY;
@@ -33,6 +34,13 @@ public class GamePanel extends JPanel implements SnakeGameView {
     public GamePanel() {
         setFocusable(true);
         requestFocusInWindow();
+
+        try {
+            Font fontFromFile = Font.createFont(Font.TRUETYPE_FONT, Resources.getResource("uk/co/lrnk/self_esteem_snake/ui/LucidaTypewriterRegular.ttf").openStream());
+            font = fontFromFile.deriveFont(Font.PLAIN, 11);
+        } catch (Exception e) {
+            throw new GameInitException("Couldn't load font from classpath: " + e.getMessage());
+        }
 
         startMenu = new StartMenu(this);
         generator = new ASCIIWorldGenerator();
